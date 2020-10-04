@@ -169,11 +169,13 @@ public:
 				ball_move.vec_direction(ball);
 			}
 
-			if (ball->xy.Y >= player.xy.Y-1 && ball->xy.X <= (player.xy.X + player.length) && ball->xy.X >= (player.xy.X)) {
-				ball->xy.Y -= ball->speed;
-				ball->upbound = TRUE;
-				ball_move.vec_direction(ball);
-				Beep(523, 50);
+			if (ball->xy.X <= (player.xy.X + player.length) && ball->xy.X >= (player.xy.X)) {
+				if (ball->xy.Y >= player.xy.Y - 1 && !(ball->xy.Y >= player.xy.Y + 1)) {
+					ball->xy.Y -= ball->speed;
+					ball->upbound = TRUE;
+					ball_move.vec_direction(ball);
+					Beep(523, 50);
+				}
 			}
 
 			if ((ball->xy.Y) >= box.size.Y + box.xy.Y) { //아래쪽 벽에 
