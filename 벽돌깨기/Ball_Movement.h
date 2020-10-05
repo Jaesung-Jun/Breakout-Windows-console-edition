@@ -14,6 +14,8 @@ private:
 
 	void calc_direction(Ball *ball, bool opposite)
 	{
+
+		/*
 		short direction[4] = {};
 
 		if (!ball->upbound) {
@@ -54,7 +56,7 @@ private:
 			ball->direction[i] = *(direction + i);
 		}
 
-		/*
+		/*******************************************************
 		short diag_matrix[2][2] = { { 0, 1 },
 		{ 1, 0 } };
 
