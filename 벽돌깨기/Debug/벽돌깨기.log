@@ -1,3 +1,13 @@
-﻿  Main.cpp
-  벽돌깨기.vcxproj -> C:\Users\제헌\Desktop\Github\Breakout\Debug\벽돌깨기.exe
-  벽돌깨기.vcxproj -> C:\Users\제헌\Desktop\Github\Breakout\Debug\벽돌깨기.pdb (Full PDB)
+﻿  Screen.cpp
+f:\github repos\breakout\벽돌깨기\screen.cpp(140): error C2039: 'vec_direction': 'BallMovement'의 멤버가 아닙니다.
+  f:\github repos\breakout\벽돌깨기\ballmovement.h(13): note: 'BallMovement' 선언을 참조하십시오.
+f:\github repos\breakout\벽돌깨기\screen.cpp(146): error C2039: 'vec_direction': 'BallMovement'의 멤버가 아닙니다.
+  f:\github repos\breakout\벽돌깨기\ballmovement.h(13): note: 'BallMovement' 선언을 참조하십시오.
+f:\github repos\breakout\벽돌깨기\screen.cpp(152): error C2039: 'vec_direction': 'BallMovement'의 멤버가 아닙니다.
+  f:\github repos\breakout\벽돌깨기\ballmovement.h(13): note: 'BallMovement' 선언을 참조하십시오.
+f:\github repos\breakout\벽돌깨기\screen.cpp(159): error C2039: 'vec_direction': 'BallMovement'의 멤버가 아닙니다.
+  f:\github repos\breakout\벽돌깨기\ballmovement.h(13): note: 'BallMovement' 선언을 참조하십시오.
+f:\github repos\breakout\벽돌깨기\screen.cpp(176): error C2059: 구문 오류: ')'
+  LinearArgebra.cpp
+  BallMovement.cpp
+  코드를 생성하고 있습니다...

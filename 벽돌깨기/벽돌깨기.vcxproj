@@ -143,6 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BallMovement.cpp" />
+    <ClCompile Include="KeyboardInput.cpp" />
+    <ClCompile Include="LinearArgebra.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="StartScreen.cpp" />
     <ClCompile Include="Main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -153,10 +157,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball_Movement.h" />
+    <ClInclude Include="BallMovement.h" />
     <ClInclude Include="ColorCode.h" />
     <ClInclude Include="DoubleBuffering.h" />
     <ClInclude Include="KeyboardInput.h" />
+    <ClInclude Include="LinearAlgebra.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="struct.h" />
   </ItemGroup>

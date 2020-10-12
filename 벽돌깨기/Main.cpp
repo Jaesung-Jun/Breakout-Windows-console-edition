@@ -29,7 +29,6 @@ int main() {
 	swall = obj.Config_Wall(&wall, box);
 
 	while (!exit_game) {
-
 		screen.Print(&dbuff,box, score_box);
 		obj.Print_Player(&dbuff, &player, key, box);
 		obj.Print_Ball(&dbuff, &ball, box, player, key);

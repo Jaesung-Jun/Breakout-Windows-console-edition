@@ -1,21 +1,25 @@
-#pragma once
-#define FALSE 0
-#define TRUE 1
-#include <Windows.h>
-#include <iostream>
-#include "struct.h"
-
-using namespace std;
-
-//reference : https://learnopengl.com/In-Practice/2D-Game/Collisions/Collision-resolution
-
-class Ball_Movement {
-private:
-
-	void calc_direction(Ball *ball, bool opposite)
-	{
-
-		/*
+#include "BallMovement.h"
+Direction BallMovement::calc_direction(short* target) 
+{
+	short up[2] = { 0, 1 };
+	short right[2] = { 1, 0 };
+	short down[2] = { 0, -1 };
+	short left[2] = { -1, 0 };
+	short* compass[4];
+	compass[0] = up; compass[1] = right;  compass[2] = down; compass[3] = left;
+	Calculation cal;
+	
+	float max = 0.0f;
+	unsigned int best_match = -1;
+	for (unsigned int i = 0; i < 4; i++) {
+		float dot_product = cal.dot(cal.normalize(target), compass[i]);
+		if (dot_product > max) {
+			max = dot_product;
+			best_match = i;
+		}
+	}
+	return (Direction)best_match;
+/*
 		short direction[4] = {};
 
 		if (!ball->upbound) {
@@ -109,35 +113,4 @@ private:
 				}
 			}
 		}*/
-	}
-
-	void find_direction(Ball* ball) {
-
-		if (ball->direction[0] == 1) // 1 0 | 0 0
-		{
-			ball->direction_xy.X = -1;
-			ball->direction_xy.Y = -1;
-		}
-		else if (ball->direction[1] == 1) //0 1 | 0 0 완료
-		{
-			ball->direction_xy.X = 1;
-			ball->direction_xy.Y = -1;
-		}
-		else if (ball->direction[2] == 1) // 0 0 | 1 0 완료
-		{
-			ball->direction_xy.X = -1;
-			ball->direction_xy.Y = 1;
-		}
-		else if (ball->direction[3] == 1) // 0 0 | 0 1
-		{
-			ball->direction_xy.X = 1;
-			ball->direction_xy.Y = 1;
-		}
-	}
-public:
-	
-	void vec_direction(Ball *ball, bool opposite = FALSE){
-		calc_direction(ball, opposite);
-		find_direction(ball);
-	}
-};
+}

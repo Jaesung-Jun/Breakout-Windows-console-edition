@@ -1,0 +1,5 @@
+﻿  소스1.cpp
+  소스.cpp
+  코드를 생성하고 있습니다...
+MSVCRTD.lib(exe_winmain.obj) : error LNK2019: _WinMain@16 외부 기호(참조 위치: "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) 함수)에서 확인하지 못했습니다.
+F:\Github Repos\Breakout\Debugging_Project\Debug_\Debug\Debug_.exe : fatal error LNK1120: 1개의 확인할 수 없는 외부 참조입니다.
