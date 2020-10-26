@@ -33,9 +33,6 @@
     <ClCompile Include="Screen.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="LinearArgebra.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DoubleBuffering.h">
@@ -54,9 +51,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="BallMovement.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="LinearAlgebra.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

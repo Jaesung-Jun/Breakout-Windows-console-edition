@@ -9,6 +9,6 @@ enum Direction {
 
 class Calculation {
 public:
-	float dot(short* m1, short * m2);
-	short* normalize(short* m1);
+	float dot(float* m1, float* m2);
+	float* normalize(float *m1);
 };

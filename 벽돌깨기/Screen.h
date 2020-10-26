@@ -28,7 +28,7 @@ protected:
 class Object {
 private:
 	void Print_Reset_Ball(DoubleBuffering* dbuff, Keyboard key, Ball* ball);
-	string Repeat_Str(string s, int n);
+	string repeat_str(string s, int n);
 	char* color_set(char* color);
 public: 
 	void Print_Player(DoubleBuffering* dbuff, Player *player, Keyboard key, Box box);

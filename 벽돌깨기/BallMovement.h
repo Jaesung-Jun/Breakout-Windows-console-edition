@@ -4,13 +4,13 @@
 #include <Windows.h>
 #include <iostream>
 #include "struct.h"
-#include "LinearAlgebra.h"
 
 using namespace std;
-
-//reference : https://learnopengl.com/In-Practice/2D-Game/Collisions/Collision-resolution
-
 class BallMovement {
+private:
+
+	void calc_direction(Ball *ball, bool opposite);
+	void find_direction(Ball* ball);
 public:
-	Direction calc_direction(short* target);
+	void vec_direction(Ball *ball, bool opposite = FALSE);
 };

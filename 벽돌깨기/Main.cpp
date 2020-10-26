@@ -29,12 +29,14 @@ int main() {
 	swall = obj.Config_Wall(&wall, box);
 
 	while (!exit_game) {
+
 		screen.Print(&dbuff,box, score_box);
 		obj.Print_Player(&dbuff, &player, key, box);
 		obj.Print_Ball(&dbuff, &ball, box, player, key);
 		obj.Print_Wall(&dbuff, &wall, swall, box);
 		obj.Crash_Wall(&ball, &wall, swall);
-		dbuff.Flip_Buffer(5);
+		dbuff.Flip_Buffer(0);
 		dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
 	}
+	delete swall;
 }

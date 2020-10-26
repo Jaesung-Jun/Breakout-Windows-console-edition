@@ -24,16 +24,11 @@ typedef struct Ball {
 	short speed = 1;
 	bool fall_down = TRUE;
 	bool upbound = FALSE;
-	short direction[2] = { 1, 1 };
+	short direction[4] = { TRUE, FALSE, FALSE, FALSE };
+	COORD direction_xy = { -1, -1 };
 	COORD xy;
-} Ball;
 
-enum Direction {
-	UP,
-	RIGHT,
-	DOWN,
-	LEFT
-};
+} Ball;
 
 typedef struct Player {
 	COORD xy = { ((DEFAULT_BOX_SIZE_X+DEFAULT_BOX_X)*2)/2, 55 };
@@ -48,6 +43,7 @@ typedef struct Box {
 typedef struct SWall {
 	short length;
 	COORD xy;
+	bool is_crashed = FALSE;
 } SWall;
 
 typedef struct Wall {

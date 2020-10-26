@@ -18,6 +18,7 @@ void Screen::Print_Map_Boundary(DoubleBuffering* dbuff, Box box) {
 		dbuff->Write_Buffer({ (box.size.X * 2 - 2 + box.xy.X), i + box.xy.Y }, WALL);
 	}
 }
+
 void Screen::Print_Score_Board(DoubleBuffering* dbuff, Score_Box score_box) {
 	for (short i = 0; i < score_box.size.X * 2 - 1; i++) {
 		dbuff->Write_Buffer({ i + score_box.xy.X, score_box.xy.Y }, WALL);
@@ -33,20 +34,17 @@ void Screen::Print_Score_Board(DoubleBuffering* dbuff, Score_Box score_box) {
 	}
 }
 
-
 void Object::Print_Reset_Ball(DoubleBuffering* dbuff, Keyboard key, Ball* ball) {
 	dbuff->Write_Buffer({ ball->xy.X, ball->xy.Y }, BALL);
 	key.Player_Ball_Input(ball); //Space키를 입력받으면 ball.fall_down을 FALSE로 바꾸고 기본 세팅까지 완료함.
 }
-
-string Object::Repeat_Str(string s, int n) {
+string Object::repeat_str(string s, int n) {
 	string s1 = s;
 	for (int i = 0; i < n; i++) {
 		s += s1;
 	}
 	return s;
 }
-
 char* Object::color_set(char* color) { //색깔코드 1씩 더해주고 마지막가면 1로 Back
 
 	int n = static_cast<int>(color[6]);
@@ -59,7 +57,6 @@ char* Object::color_set(char* color) { //색깔코드 1씩 더해주고 마지막가면 1로 Ba
 	color[6] = static_cast<char>(n);
 	return color;
 }
-
 void Object::Print_Player(DoubleBuffering* dbuff, Player *player, Keyboard key, Box box) {
 
 	key.Player_X_Input(&(player->xy.X));
@@ -75,14 +72,16 @@ void Object::Print_Player(DoubleBuffering* dbuff, Player *player, Keyboard key, 
 		dbuff->Write_Buffer({ player->xy.X + i, player->xy.Y }, PLAYER);
 	}
 }
-
 void Object::Print_Wall(DoubleBuffering* dbuff, Wall* wall, SWall* swall, Box box) {
 	char* default_color = DESTROYABLE_WALL;
 
 	for (short i = 0; i < wall->nblocks; i++) {
 		//default_color = color_set(default_color);
-		dbuff->Write_Buffer({ swall[i].xy.X, swall[i].xy.Y }, Repeat_Str(default_color, swall[i].length));
+		if(swall[i].is_crashed == FALSE){
+			dbuff->Write_Buffer({ swall[i].xy.X, swall[i].xy.Y }, repeat_str(default_color, swall[i].length));
+		}
 	}
+
 	/////////////////////////////////////////////////////////
 	std::string debug5 = std::to_string(wall->nblocks);
 	dbuff->Write_Buffer({ 150, 34 }, debug5);
@@ -90,18 +89,33 @@ void Object::Print_Wall(DoubleBuffering* dbuff, Wall* wall, SWall* swall, Box bo
 }
 
 void Object::Crash_Wall(Ball* ball, Wall* wall, SWall* swall) {
+	BallMovement ball_move;
 	for (short i = 0; i < wall->nblocks; i++) {
-		if (ball->xy.X <= (swall[i].xy.X + swall[i].length) && ball->xy.X >= swall[i].xy.X && swall[i].xy.Y <= ball->xy.Y && swall[i].xy.Y >= ball->xy.Y) {
-			size_t array_size = wall->nblocks;
-			memmove(swall + i, swall + i + 1, (array_size - i - 1) * sizeof(SWall));
-			wall->nblocks--;
+		if (swall[i].is_crashed == FALSE) {
+			if (ball->xy.X <= (swall[i].xy.X + swall[i].length) && ball->xy.X >= swall[i].xy.X && swall[i].xy.Y <= ball->xy.Y && swall[i].xy.Y >= ball->xy.Y) {
+				if (swall[i].xy.X + 1 == swall[i + 1].xy.X && swall[i].xy.X - 1 == swall[i - 1].xy.X) { //Horizontal Collision Resolution
+					swall[i].is_crashed = TRUE;
+					ball->upbound = FALSE;
+					ball_move.vec_direction(ball);
+				}
+				else { //Vertical Collision Resolution
+					swall[i].is_crashed = TRUE;
+					ball->upbound = TRUE;
+					ball_move.vec_direction(ball);
+				}
+				/*size_t array_size = wall->nblocks;
+				memmove(swall + i, swall + i + 1, (array_size - i - 1) * sizeof(SWall));
+				wall->nblocks--;*/
+			}
 		}
 	}
 }
+
 SWall* Object::Config_Wall(Wall* wall, Box box) {
 
-	wall->nblocks = ((((box.size.X * 2) + 5) - (box.xy.X * 2) + 2) / wall->block_length) * (wall->height + 1);
-	SWall* swall = new SWall[wall->nblocks]();
+	wall->nblocks = ((((box.size.X * 2) + 2) - (box.xy.X * 2) + 2) / wall->block_length) * (wall->height + 1);
+	SWall* swall = new SWall[wall->nblocks](); //delete 부분
+
 	int l = 0;
 	for (short i = wall->y; i < wall->height + wall->y; i++) {
 		for (short j = box.xy.X + 2; j < box.size.X * 2 + 5; j += wall->block_length) {
@@ -123,7 +137,6 @@ SWall* Object::Config_Wall(Wall* wall, Box box) {
 	}
 	return swall;
 }
-
 void Object::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player player, Keyboard key) {
 
 	if (ball->fall_down) {
@@ -151,7 +164,13 @@ void Object::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player play
 			ball->upbound = TRUE;
 			ball_move.vec_direction(ball);
 		}
-
+		/*
+		if (ball->xy.Y >= player.xy.Y - 1 && ball->xy.X <= (player.xy.X + player.length) && ball->xy.X >= (player.xy.X)) {
+			ball->xy.Y -= ball->speed;
+			ball->upbound = TRUE;
+			ball_move.vec_direction(ball);
+			Beep(523, 50);
+		}*/
 		if (ball->xy.X <= (player.xy.X + player.length) && ball->xy.X >= (player.xy.X)) {
 			if (ball->xy.Y >= player.xy.Y - 1 && !(ball->xy.Y >= player.xy.Y + 1)) {
 				ball->xy.Y -= ball->speed;
@@ -168,16 +187,18 @@ void Object::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player play
 			//ball_move.find_direction(ball, ptr_direction);
 		}
 
-		ball->xy.X = (ball->xy.X + (ball->direction[0] * ball->speed));
-		ball->xy.Y = (ball->xy.Y + (ball->direction[1] * ball->speed));
+		ball->xy.X = (ball->xy.X + (ball->direction_xy.X * ball->speed));
+		ball->xy.Y = (ball->xy.Y + (ball->direction_xy.Y * ball->speed));
 
 		//////////////////////////////////////////////////////////////////////////
 		std::string debug1 = std::to_string(ball->xy.X) + ", " + std::to_string(ball->xy.Y);
-		std::string debug2 = std::to_string(ball->direction[0]) + std::to_string(ball->direction[1]);
-		std::string debug3 = std::to_string(ball->upbound);
+		std::string debug2 = std::to_string(ball->direction[0]) + std::to_string(ball->direction[1]) + "," + std::to_string(ball->direction[2]) + std::to_string(ball->direction[3]);
+		std::string debug3 = std::to_string(ball->direction_xy.X) + std::to_string(ball->direction_xy.Y);
+		std::string debug4 = std::to_string(ball->upbound);
 		dbuff->Write_Buffer({ 150, 30 }, debug1);
 		dbuff->Write_Buffer({ 150, 31 }, debug2);
-		dbuff->Write_Buffer({ 150, 33 }, debug3);
+		dbuff->Write_Buffer({ 150, 32 }, debug3);
+		dbuff->Write_Buffer({ 150, 33 }, debug4);
 		/////////////////////////////////////////////////////////////////////////
 
 		dbuff->Write_Buffer({ ball->xy.X, ball->xy.Y }, BALL);
