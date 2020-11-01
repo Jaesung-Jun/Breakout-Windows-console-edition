@@ -146,6 +146,7 @@
     <ClCompile Include="BallMovement.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="StartScreen.cpp" />
     <ClCompile Include="Main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -161,6 +162,7 @@
     <ClInclude Include="DoubleBuffering.h" />
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="struct.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

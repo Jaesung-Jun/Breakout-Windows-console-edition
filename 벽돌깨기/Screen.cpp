@@ -6,16 +6,16 @@ void Screen::Print_Score_Board_Info(DoubleBuffering* dbuff, string str, COORD sc
 
 void Screen::Print_Map_Boundary(DoubleBuffering* dbuff, Box box) {
 	for (short i = 0; i < box.size.X * 2 - 1; i++) {
-		dbuff->Write_Buffer({ i + box.xy.X, box.xy.Y }, WALL);
+		dbuff->Write_Buffer({ i + box.xy.X, box.xy.Y }, WALL_ANSI_COLOR_CYAN);
 	}
 	for (short i = 1; i < box.size.Y; i++) {
-		dbuff->Write_Buffer({ box.xy.X, i + box.xy.Y }, WALL);
+		dbuff->Write_Buffer({ box.xy.X, i + box.xy.Y }, WALL_ANSI_COLOR_CYAN);
 	}
 	for (short i = 0; i < box.size.X * 2 - 1; i++) {
-		dbuff->Write_Buffer({ i + box.xy.X, box.size.Y + box.xy.Y }, WALL);
+		dbuff->Write_Buffer({ i + box.xy.X, box.size.Y + box.xy.Y }, WALL_ANSI_COLOR_CYAN);
 	}
 	for (short i = 1; i < box.size.Y; i++) {
-		dbuff->Write_Buffer({ (box.size.X * 2 - 2 + box.xy.X), i + box.xy.Y }, WALL);
+		dbuff->Write_Buffer({ (box.size.X * 2 - 2 + box.xy.X), i + box.xy.Y }, WALL_ANSI_COLOR_CYAN);
 	}
 }
 
@@ -38,6 +38,7 @@ void Object::Print_Reset_Ball(DoubleBuffering* dbuff, Keyboard key, Ball* ball) 
 	dbuff->Write_Buffer({ ball->xy.X, ball->xy.Y }, BALL);
 	key.Player_Ball_Input(ball); //Space키를 입력받으면 ball.fall_down을 FALSE로 바꾸고 기본 세팅까지 완료함.
 }
+
 string Object::repeat_str(string s, int n) {
 	string s1 = s;
 	for (int i = 0; i < n; i++) {
@@ -45,8 +46,8 @@ string Object::repeat_str(string s, int n) {
 	}
 	return s;
 }
-char* Object::color_set(char* color) { //색깔코드 1씩 더해주고 마지막가면 1로 Back
 
+char* Object::color_set(char* color) { //색깔코드 1씩 더해주고 마지막가면 1로 Back
 	int n = static_cast<int>(color[6]);
 
 	if (n == 6)
@@ -77,7 +78,7 @@ void Object::Print_Wall(DoubleBuffering* dbuff, Wall* wall, SWall* swall, Box bo
 
 	for (short i = 0; i < wall->nblocks; i++) {
 		//default_color = color_set(default_color);
-		if(swall[i].is_crashed == FALSE){
+		if (swall[i].is_crashed == FALSE) {
 			dbuff->Write_Buffer({ swall[i].xy.X, swall[i].xy.Y }, repeat_str(default_color, swall[i].length));
 		}
 	}
@@ -92,15 +93,15 @@ void Object::Crash_Wall(Ball* ball, Wall* wall, SWall* swall) {
 	BallMovement ball_move;
 	for (short i = 0; i < wall->nblocks; i++) {
 		if (swall[i].is_crashed == FALSE) {
-			if (ball->xy.X <= (swall[i].xy.X + swall[i].length) && ball->xy.X >= swall[i].xy.X && swall[i].xy.Y <= ball->xy.Y && swall[i].xy.Y >= ball->xy.Y) {
-				if (swall[i].xy.X + 1 == swall[i + 1].xy.X && swall[i].xy.X - 1 == swall[i - 1].xy.X) { //Horizontal Collision Resolution
+			if (ball->xy.X <= (swall[i].xy.X + swall[i].length) && ball->xy.X >= swall[i].xy.X && swall[i].xy.Y <= ball->xy.Y && swall[i].xy.Y >= ball->xy.Y) { //if crashed
+				if ((swall[i].xy.X + wall->block_length == swall[i + 1].xy.X) || (swall[i].xy.X - wall->block_length == swall[i - 1].xy.X)) { //Horizontal Collision Resolution
 					swall[i].is_crashed = TRUE;
-					ball->upbound = FALSE;
+					ball->upbound = TRUE;
 					ball_move.vec_direction(ball);
 				}
 				else { //Vertical Collision Resolution
 					swall[i].is_crashed = TRUE;
-					ball->upbound = TRUE;
+					ball->upbound = FALSE;
 					ball_move.vec_direction(ball);
 				}
 				/*size_t array_size = wall->nblocks;
@@ -112,29 +113,53 @@ void Object::Crash_Wall(Ball* ball, Wall* wall, SWall* swall) {
 }
 
 SWall* Object::Config_Wall(Wall* wall, Box box) {
+	/*
+	wall->nblocks = (((box.size.X * 2) / wall->block_length)) * (wall->height);
+	wall->width = (((box.size.X * 2) / wall->block_length));
 
-	wall->nblocks = ((((box.size.X * 2) + 2) - (box.xy.X * 2) + 2) / wall->block_length) * (wall->height + 1);
+	char** wall_set = new char*[wall->width];
+
+	for (int i = 0; i < wall->height; i++) {
+		wall_set[i] = new char[wall->height];
+	}
+
+	wall_set = {};
+
+	SWall* swall = new SWall[wall->nblocks]();
+	*/
+	/*
+	for (short i = 0; i < wall->width; i++) {
+		for (short j = 0; i < wall->height; k++) {
+			swall[num_blocks].xy = { (box.xy.X - 3) + wall->block_length, i + wall->y };
+			swall[num_blocks].length = wall->block_length;
+			num_blocks++;
+		}
+	}*/
+
+	
+	wall->nblocks = ((box.size.X * 2) / wall->block_length) * (wall->height);
 	SWall* swall = new SWall[wall->nblocks](); //delete 부분
 
 	int l = 0;
+	short tmp_block_size;
 	for (short i = wall->y; i < wall->height + wall->y; i++) {
-		for (short j = box.xy.X + 2; j < box.size.X * 2 + 5; j += wall->block_length) {
+		for (short j = box.xy.X + 2; j < ((box.size.X * 2) + (box.xy.X + 2)); j += wall->block_length) {
 
-			if ((j + wall->block_length) >((box.size.X * 2) + 5) + ((box.xy.X * 2) + 2)) {
-				short tmp_block_size = ((((box.size.X * 2)) - (box.xy.X * 2)) % wall->block_length);
-				for (short k = 0; k < tmp_block_size; k++) {
-					swall[l].xy = { j - tmp_block_size, i };
-				}
+			if (j+wall->block_length > ((box.size.X * 2 - 5) + (box.xy.X + 2))) {
+				tmp_block_size = ((box.size.X * 2 - 5) % wall->block_length);
+				cout << tmp_block_size << endl;
+				swall[l].xy = { j, i };
 				swall[l].length = tmp_block_size;
 				l++;
 			}
-			for (short k = 0; k < wall->block_length; k++) {
+			else{
 				swall[l].xy = { j, i };
+				swall[l].length = wall->block_length;
+				l++;
 			}
-			swall[l].length = wall->block_length;
-			l++;
 		}
 	}
+	
 	return swall;
 }
 void Object::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player player, Keyboard key) {
