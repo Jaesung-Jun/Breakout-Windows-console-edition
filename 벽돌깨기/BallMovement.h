@@ -8,7 +8,6 @@
 using namespace std;
 class BallMovement {
 private:
-
 	void calc_direction(Ball *ball, bool opposite);
 	void find_direction(Ball* ball);
 public:

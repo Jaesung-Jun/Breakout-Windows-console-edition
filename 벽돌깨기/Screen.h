@@ -4,6 +4,7 @@
 #include "ColorCode.h"
 #include "struct.h"
 #include "BallMovement.h"
+#include "Sound.h"
 
 #define WALL "■"
 #define PLAYER  "="

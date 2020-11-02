@@ -90,6 +90,7 @@ void Object::Print_Wall(DoubleBuffering* dbuff, Wall* wall, SWall* swall, Box bo
 }
 
 void Object::Crash_Wall(Ball* ball, Wall* wall, SWall* swall) {
+	Sound sound;
 	BallMovement ball_move;
 	for (short i = 0; i < wall->nblocks; i++) {
 		if (swall[i].is_crashed == FALSE) {
@@ -98,8 +99,9 @@ void Object::Crash_Wall(Ball* ball, Wall* wall, SWall* swall) {
 					swall[i].is_crashed = TRUE;
 					ball->upbound = TRUE;
 					ball_move.vec_direction(ball);
+					sound.down_pitch_play(200, 10, 1);
 				}
-				else { //Vertical Collision Resolution
+				else if ((swall[i].xy.X + wall->block_length != swall[i + 1].xy.X) || (swall[i].xy.X - wall->block_length != swall[i - 1].xy.X)) { //Vertical Collision Resolution
 					swall[i].is_crashed = TRUE;
 					ball->upbound = FALSE;
 					ball_move.vec_direction(ball);
@@ -164,10 +166,11 @@ SWall* Object::Config_Wall(Wall* wall, Box box) {
 }
 void Object::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player player, Keyboard key) {
 
+	Sound sound;
+
 	if (ball->fall_down) {
 		ball->xy = { (player.xy.X + (player.length / 2)), player.xy.Y - 1 };
 		Print_Reset_Ball(dbuff, key, ball);
-
 	}
 	else if (!ball->fall_down) {
 		BallMovement ball_move;
@@ -201,7 +204,8 @@ void Object::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player play
 				ball->xy.Y -= ball->speed;
 				ball->upbound = TRUE;
 				ball_move.vec_direction(ball);
-				Beep(523, 50);
+				sound.up_pitch_play(50, 50, 1);
+				}
 			}
 		}
 
@@ -227,7 +231,6 @@ void Object::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player play
 		/////////////////////////////////////////////////////////////////////////
 
 		dbuff->Write_Buffer({ ball->xy.X, ball->xy.Y }, BALL);
-	}
 }
 
 void Main_Screen::Print(DoubleBuffering *dbuff, Box box, Score_Box score_box) {

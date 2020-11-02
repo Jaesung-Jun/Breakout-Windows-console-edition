@@ -2,8 +2,8 @@
 #include <Windows.h>
 #define DEFAULT_PLAYER_LENGTH 12
 
-#define DEFAULT_BOX_SIZE_X 45
-#define DEFAULT_BOX_SIZE_Y 60
+#define DEFAULT_BOX_SIZE_X 44
+#define DEFAULT_BOX_SIZE_Y 61
 
 #define DEFAULT_SCORE_BOX_SIZE_X 15
 #define DEFAULT_SCORE_BOX_SIZE_Y 15
@@ -17,7 +17,7 @@
 #define DEFAULT_WALL_HEIGHT 8;
 #define DEFAULT_WALL_Y 5
 
-#define DEFAULT_BLOCK_LENGTH 10; //Recommended to set between 10-28 values.
+#define DEFAULT_BLOCK_LENGTH 11; //Recommended to set between 10-28 values.
 
 
 typedef struct Ball {
