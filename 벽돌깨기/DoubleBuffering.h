@@ -12,7 +12,7 @@ public:
 		window_size.Right = window_x - 1;
 		window_size.Bottom = window_y - 1;
 
-		system("mode con cols=150 lines=100");
+		system("mode con cols=132 lines=60");
 		// Make Buffer
 		hBuffer[0] = { CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL) };
 		hBuffer[1] = { CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL) };
