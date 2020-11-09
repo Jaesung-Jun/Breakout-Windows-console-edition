@@ -13,6 +13,7 @@ public:
 		window_size.Bottom = window_y - 1;
 
 		system("mode con cols=132 lines=60");
+
 		// Make Buffer
 		hBuffer[0] = { CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL) };
 		hBuffer[1] = { CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL) };
@@ -46,6 +47,8 @@ public:
 		DWORD dw;
 		FillConsoleOutputCharacter(hBuffer[screen_index], ' ', window_x*window_y, coord, &dw);
 	}
+
+
 	void Disable_Buffer() {
 		CloseHandle(hBuffer[0]);
 		CloseHandle(hBuffer[1]);

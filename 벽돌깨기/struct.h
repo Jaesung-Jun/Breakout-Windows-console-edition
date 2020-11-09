@@ -17,7 +17,7 @@
 #define DEFAULT_WALL_HEIGHT 10;
 #define DEFAULT_WALL_Y 8
 
-#define DEFAULT_BLOCK_LENGTH 5; //Recommended to set between 10-28 values.
+#define DEFAULT_BLOCK_LENGTH 5; //Recommended to set between 5 - 8 values.
 
 typedef struct Ball {
 	short speed = 1;

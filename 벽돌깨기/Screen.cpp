@@ -80,23 +80,6 @@ void Screen::Print_Score_Board(DoubleBuffering* dbuff, Score_Box score_box) {
 	}
 }
 
-int Object::Ball_Fall_Down(Ball ball) {
-	int score=0;
-	if (ball.fall_down == TRUE) {
-		score -= 10;
-	}
-	return score;
-}
-
-int Object::Crashed_Blocks(SWall* swall, int size, Ball ball) {
-	int score = 0;
-	for (int i = 0; i < size; i++) {
-		if (swall[i].is_crashed == TRUE) {
-			score++;
-		}
-	}
-	return score;
-}
 
 void Object::Print_Reset_Ball(DoubleBuffering* dbuff, Keyboard key, Ball* ball) {
 	dbuff->Write_Buffer({ ball->xy.X, ball->xy.Y }, BALL);
@@ -283,7 +266,52 @@ void Object::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player* pla
 
 }
 
-void Main_Screen::Print(DoubleBuffering *dbuff, Box box, Score_Box score_box) {
+void Main_Screen::Print_Main_Screen(DoubleBuffering *dbuff, Box box, Score_Box score_box) {
 	Print_Map_Boundary(dbuff, box);
 	Print_Score_Board(dbuff, score_box);
+}
+
+void Main_Screen::Print_Start_Screen(DoubleBuffering *dbuff) {
+	for (short i = 0; i < 131; i++) {
+		dbuff->Write_Buffer({ i, 0 }, WALL_ANSI_COLOR_GREEN);
+	}
+	for (short i = 1; i < 60; i++) {
+		dbuff->Write_Buffer({ 0, i }, WALL_ANSI_COLOR_GREEN);
+	}
+	for (short i = 0; i < 131; i++) {
+		dbuff->Write_Buffer({ i, 59 }, WALL_ANSI_COLOR_GREEN);
+	}
+	for (short i = 1; i < 60; i++) {
+		dbuff->Write_Buffer({130, i}, WALL_ANSI_COLOR_GREEN);
+	}
+	Print_Main_Title(dbuff);
+}
+
+void Main_Screen::Print_Main_Title(DoubleBuffering *dbuff) {
+	dbuff->Write_Buffer({ 30, 10 }, "                                                ((//*,                         ");
+	dbuff->Write_Buffer({ 30, 11 }, "                                            &&&%%(((((//*///                    ");
+	dbuff->Write_Buffer({ 30, 12 }, "                        //                &&%#((((/((((//(((((                  ");
+	dbuff->Write_Buffer({ 30, 13 }, "                      /**               &%#((/////**////(((/((((                ");
+	dbuff->Write_Buffer({ 30, 14 }, "                     /**.              #&%%(/////(%/(((//(/((##(/,              ");
+	dbuff->Write_Buffer({ 30, 15 }, "                   ****,/**,          (*#(///(/***((*/#//(//(#%###              ");
+	dbuff->Write_Buffer({ 30, 16 }, "                  (*,**,****,        &/*//(/(////****(/**//@#/#/                ");
+	dbuff->Write_Buffer({ 30, 17 }, "                 /##(****/*//(      %(%&(((((//**(///#@##(*//#(                 ");
+	dbuff->Write_Buffer({ 30, 18 }, "                 #(###/(**///       ##/((((((//*//#%%#//#(/(%                   ");
+	dbuff->Write_Buffer({ 30, 19 }, "                 (((#((*((&#         ((#(((((/(///*/**%/((#                     ");
+	dbuff->Write_Buffer({ 30, 20 }, "                (((((////(         ,. (###((//(///*//((/((                      ");
+	dbuff->Write_Buffer({ 30, 21 }, "              /((////(((#      ,&@*     ,####(###(((/###                        ");
+	dbuff->Write_Buffer({ 30, 22 }, "          &@@&..***//(#&&&&&@&&&&&@.      .###%%####((                          ");
+	dbuff->Write_Buffer({ 30, 23 }, "        &@@@@@@.  *//,&&@@&@@@@&&&&&        .#%%%%##%                           ");
+	dbuff->Write_Buffer({ 30, 24 }, "       @@@@@@@@@&..  &@@@@@@@@@@@&&&&       %((#%.,@                            ");
+	dbuff->Write_Buffer({ 30, 25 }, "      @&@@@@@@@@@@(.,@@@@@@@@@@@@@@@@&     ..%%%(&.%@&%                         ");
+	dbuff->Write_Buffer({ 30, 26 }, "    #@@@@@@@@@@@@@@@@@@@@@@@@@&@@@@@@&     ..(#(( .,,@&&&&&%                    ");
+	dbuff->Write_Buffer({ 30, 27 }, " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@&@@@&&&&&/    .(/(((   .@@@&@@@@@&@&&             ");
+	dbuff->Write_Buffer({ 30, 28 }, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&&&&    .(/(/(/   #@&@@/@@@@&@&@            ");
+	dbuff->Write_Buffer({ 30, 29 }, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&/    #/////*   @&&&@@@&&&&&@.           ");
+	dbuff->Write_Buffer({ 30, 30 }, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&@@@@@&    ////(//   @&@@&@@&@&&&&&.          ");
+
+}
+
+void Main_Screen::Print_GameOver_Screen(DoubleBuffering *dbuff) {
+
 }

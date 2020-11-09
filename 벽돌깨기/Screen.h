@@ -22,7 +22,6 @@ string Repeat_Str(string s, int n);
 short Color_Set(short color);
 string Color_Code_Generator(string object, short color);
 
-
 class Screen {
 public:
 	void Print_Time_Limit(DoubleBuffering* dbuff, COORD score_box_xy, int time);
@@ -43,11 +42,12 @@ public:
 	void Crash_Wall(Ball* ball, Wall* wall, SWall* swall, Player* player);
 	SWall* Config_Wall(Wall* wall, Box box);
 	void Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player* player, Keyboard key);
-	int Crashed_Blocks(SWall* swall, int size, Ball ball);
-	int Ball_Fall_Down(Ball ball);
 };
 
 class Main_Screen : public Screen {
 public:
-	void Print(DoubleBuffering *dbuff, Box box, Score_Box score_box);
+	void Print_Main_Screen(DoubleBuffering *dbuff, Box box, Score_Box score_box);
+	void Print_Start_Screen(DoubleBuffering *dbuff);
+	void Print_GameOver_Screen(DoubleBuffering *dbuff);
+	void Print_Main_Title(DoubleBuffering *dbuff);
 };

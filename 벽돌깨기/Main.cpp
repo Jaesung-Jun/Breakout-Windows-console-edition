@@ -23,6 +23,7 @@ int main() {
 	SetConsoleTitle(L"Break the Wall");
 
 	bool game_over = FALSE;
+	bool game_start = FALSE;
 
 	///////////////////////////////
 	int time_limit = 90;
@@ -35,30 +36,42 @@ int main() {
 
 	time_limit *= 30;
 
-	while (!game_over) {
-		if (GetAsyncKeyState(VK_SPACE) < 0) {
-			game_start_trigger = FALSE;
+	
+	while (1) {
+		while (!game_start) {
+			screen.Print_Start_Screen(&dbuff);
+			dbuff.Flip_Buffer(1);
+			dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
 		}
 
-		screen.Print(&dbuff,box, score_box);
-		screen.Print_Time_Limit(&dbuff, score_box.xy, time_limit);
-		screen.Print_Crashed_Block_Num(&dbuff, score_box.xy, player.score);
-		screen.Print_Remain_Block_Num(&dbuff, score_box.xy, swall, wall.nblocks);
+		while (!game_over) {					//Game Start!!
+			if (GetAsyncKeyState(VK_SPACE) < 0) {
+				game_start_trigger = FALSE;
+			}
+			screen.Print_Main_Screen(&dbuff, box, score_box);
+			screen.Print_Time_Limit(&dbuff, score_box.xy, time_limit);
+			screen.Print_Crashed_Block_Num(&dbuff, score_box.xy, player.score);
+			screen.Print_Remain_Block_Num(&dbuff, score_box.xy, swall, wall.nblocks);
 
-		obj.Print_Player(&dbuff, &player, key, box);
-		obj.Print_Ball(&dbuff, &ball, box, &player, key);
-		obj.Print_Wall(&dbuff, &wall, swall, box);
-		obj.Crash_Wall(&ball, &wall, swall, &player);
+			obj.Print_Player(&dbuff, &player, key, box);
+			obj.Print_Ball(&dbuff, &ball, box, &player, key);
+			obj.Print_Wall(&dbuff, &wall, swall, box);
+			obj.Crash_Wall(&ball, &wall, swall, &player);
 
-		dbuff.Flip_Buffer(1);
-		dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
+			dbuff.Flip_Buffer(1);
+			dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
 
-		if (!game_start_trigger) {
-			time_limit--;
-		}
-		if (time_limit < 0) {
-			game_over = TRUE;
-		}
+			if (!game_start_trigger) {
+				time_limit--;
+			}
+			if (time_limit < 0) {
+				game_over = TRUE;
+			}
+		}										//Game Over
+		
+												//Game score record
+
+												//Continue?!
 	}
 	delete swall;
 	return 0;
