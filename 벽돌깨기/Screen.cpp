@@ -1,5 +1,15 @@
 #include "Screen.h"
 
+/*************************************************************************
+*									!NOTICE!
+* 
+*		Game_Over, Game_Start Screens are wroted in Screen_Status.cpp!
+* 
+*		Function Name : Main_Screen::Print_Main_Title,
+*						Main_Screen::Print_GameOver_Screen
+*		
+**************************************************************************/
+
 string Repeat_Str(string s, int n) {
 	string s1 = s;
 	for (int i = 0; i < n; i++) {
@@ -182,7 +192,7 @@ SWall* Object::Config_Wall(Wall* wall, Box box) {
 				l++;
 			}
 			else{
-				swall[l].xy = { j, i };
+				swall[l].xy = { j, i };						//Buffer OverRun Bug Detected!
 				swall[l].length = wall->block_length;
 				swall[l].color = Color_Set(color);
 				l++;
@@ -271,7 +281,7 @@ void Main_Screen::Print_Main_Screen(DoubleBuffering *dbuff, Box box, Score_Box s
 	Print_Score_Board(dbuff, score_box);
 }
 
-void Main_Screen::Print_Start_Screen(DoubleBuffering *dbuff) {
+void Main_Screen::Print_Start_Screen(DoubleBuffering *dbuff, Keyboard *key, short status) {
 	for (short i = 0; i < 131; i++) {
 		dbuff->Write_Buffer({ i, 0 }, WALL_ANSI_COLOR_GREEN);
 	}
@@ -284,34 +294,10 @@ void Main_Screen::Print_Start_Screen(DoubleBuffering *dbuff) {
 	for (short i = 1; i < 60; i++) {
 		dbuff->Write_Buffer({130, i}, WALL_ANSI_COLOR_GREEN);
 	}
-	Print_Main_Title(dbuff);
+	Print_Main_Title(dbuff, key, status);
 }
 
-void Main_Screen::Print_Main_Title(DoubleBuffering *dbuff) {
-	dbuff->Write_Buffer({ 30, 10 }, "                                                ((//*,                         ");
-	dbuff->Write_Buffer({ 30, 11 }, "                                            &&&%%(((((//*///                    ");
-	dbuff->Write_Buffer({ 30, 12 }, "                        //                &&%#((((/((((//(((((                  ");
-	dbuff->Write_Buffer({ 30, 13 }, "                      /**               &%#((/////**////(((/((((                ");
-	dbuff->Write_Buffer({ 30, 14 }, "                     /**.              #&%%(/////(%/(((//(/((##(/,              ");
-	dbuff->Write_Buffer({ 30, 15 }, "                   ****,/**,          (*#(///(/***((*/#//(//(#%###              ");
-	dbuff->Write_Buffer({ 30, 16 }, "                  (*,**,****,        &/*//(/(////****(/**//@#/#/                ");
-	dbuff->Write_Buffer({ 30, 17 }, "                 /##(****/*//(      %(%&(((((//**(///#@##(*//#(                 ");
-	dbuff->Write_Buffer({ 30, 18 }, "                 #(###/(**///       ##/((((((//*//#%%#//#(/(%                   ");
-	dbuff->Write_Buffer({ 30, 19 }, "                 (((#((*((&#         ((#(((((/(///*/**%/((#                     ");
-	dbuff->Write_Buffer({ 30, 20 }, "                (((((////(         ,. (###((//(///*//((/((                      ");
-	dbuff->Write_Buffer({ 30, 21 }, "              /((////(((#      ,&@*     ,####(###(((/###                        ");
-	dbuff->Write_Buffer({ 30, 22 }, "          &@@&..***//(#&&&&&@&&&&&@.      .###%%####((                          ");
-	dbuff->Write_Buffer({ 30, 23 }, "        &@@@@@@.  *//,&&@@&@@@@&&&&&        .#%%%%##%                           ");
-	dbuff->Write_Buffer({ 30, 24 }, "       @@@@@@@@@&..  &@@@@@@@@@@@&&&&       %((#%.,@                            ");
-	dbuff->Write_Buffer({ 30, 25 }, "      @&@@@@@@@@@@(.,@@@@@@@@@@@@@@@@&     ..%%%(&.%@&%                         ");
-	dbuff->Write_Buffer({ 30, 26 }, "    #@@@@@@@@@@@@@@@@@@@@@@@@@&@@@@@@&     ..(#(( .,,@&&&&&%                    ");
-	dbuff->Write_Buffer({ 30, 27 }, " @@@@@@@@@@@@@@@@@@@@@@@@@@@@@&@@@&&&&&/    .(/(((   .@@@&@@@@@&@&&             ");
-	dbuff->Write_Buffer({ 30, 28 }, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&&&&    .(/(/(/   #@&@@/@@@@&@&@            ");
-	dbuff->Write_Buffer({ 30, 29 }, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&/    #/////*   @&&&@@@&&&&&@.           ");
-	dbuff->Write_Buffer({ 30, 30 }, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&@@@@@&    ////(//   @&@@&@@&@&&&&&.          ");
 
-}
-
-void Main_Screen::Print_GameOver_Screen(DoubleBuffering *dbuff) {
+void Main_Screen::Print_GameOver_Screen(DoubleBuffering *dbuff, Keyboard *key) {
 
 }

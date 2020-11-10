@@ -45,9 +45,10 @@ public:
 };
 
 class Main_Screen : public Screen {
+private:
+	void Print_Main_Title(DoubleBuffering* dbuff, Keyboard *key, short status);
 public:
 	void Print_Main_Screen(DoubleBuffering *dbuff, Box box, Score_Box score_box);
-	void Print_Start_Screen(DoubleBuffering *dbuff);
-	void Print_GameOver_Screen(DoubleBuffering *dbuff);
-	void Print_Main_Title(DoubleBuffering *dbuff);
+	void Print_Start_Screen(DoubleBuffering *dbuff, Keyboard *key, short status);
+	void Print_GameOver_Screen(DoubleBuffering *dbuff, Keyboard *key);
 };

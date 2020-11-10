@@ -20,14 +20,14 @@ int main() {
 	
 	SWall* swall;
 
-	SetConsoleTitle(L"Break the Wall");
+	SetConsoleTitle(L"Break Out");
 
 	bool game_over = FALSE;
 	bool game_start = FALSE;
-
 	///////////////////////////////
-	int time_limit = 90;
+	int time_limit = 5;
 	bool game_start_trigger = TRUE;
+	int game_status = 1;
 	//////////////////////////////
 
 	const COORD default_ball_xy = { (player.xy.X + (player.length / 2)), player.xy.Y - 1 };
@@ -39,39 +39,51 @@ int main() {
 	
 	while (1) {
 		while (!game_start) {
-			screen.Print_Start_Screen(&dbuff);
-			dbuff.Flip_Buffer(1);
-			dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
-		}
+			game_status = key.Game_Status_Choose(game_status);
+			screen.Print_Start_Screen(&dbuff, &key, game_status);
+			if (game_status == 0 && key.Game_Status_Choose_Check()) {
+				while (!game_over) {					//Game Start!!
+					if (GetAsyncKeyState(VK_SPACE) < 0) {
+						game_start_trigger = FALSE;
+					}
+					screen.Print_Main_Screen(&dbuff, box, score_box);
+					screen.Print_Time_Limit(&dbuff, score_box.xy, time_limit);
+					screen.Print_Crashed_Block_Num(&dbuff, score_box.xy, player.score);
+					screen.Print_Remain_Block_Num(&dbuff, score_box.xy, swall, wall.nblocks);
 
-		while (!game_over) {					//Game Start!!
-			if (GetAsyncKeyState(VK_SPACE) < 0) {
-				game_start_trigger = FALSE;
-			}
-			screen.Print_Main_Screen(&dbuff, box, score_box);
-			screen.Print_Time_Limit(&dbuff, score_box.xy, time_limit);
-			screen.Print_Crashed_Block_Num(&dbuff, score_box.xy, player.score);
-			screen.Print_Remain_Block_Num(&dbuff, score_box.xy, swall, wall.nblocks);
+					obj.Print_Player(&dbuff, &player, key, box);
+					obj.Print_Ball(&dbuff, &ball, box, &player, key);
+					obj.Print_Wall(&dbuff, &wall, swall, box);
+					obj.Crash_Wall(&ball, &wall, swall, &player);
 
-			obj.Print_Player(&dbuff, &player, key, box);
-			obj.Print_Ball(&dbuff, &ball, box, &player, key);
-			obj.Print_Wall(&dbuff, &wall, swall, box);
-			obj.Crash_Wall(&ball, &wall, swall, &player);
+					dbuff.Flip_Buffer(1);
+					dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
 
-			dbuff.Flip_Buffer(1);
-			dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
-
-			if (!game_start_trigger) {
-				time_limit--;
-			}
-			if (time_limit < 0) {
-				game_over = TRUE;
-			}
-		}										//Game Over
+					if (!game_start_trigger) {
+						time_limit--;
+					}
+					if (time_limit < 0) {
+						game_over = TRUE;
+					}							
+												//Game Over
 		
 												//Game score record
 
 												//Continue?!
+				}
+				game_over = FALSE;
+				time_limit = 30;
+				time_limit *= 30;
+			}
+			else if (game_status == 1 && key.Game_Status_Choose_Check()) {
+				return 0;
+			}
+			else if (game_status == 2) {
+
+			}
+			dbuff.Flip_Buffer(1);
+			dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
+		}								
 	}
 	delete swall;
 	return 0;

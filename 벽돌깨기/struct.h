@@ -19,6 +19,14 @@
 
 #define DEFAULT_BLOCK_LENGTH 5; //Recommended to set between 5 - 8 values.
 
+enum class GAMESTATUS {
+	GAME_START = 0,
+	GAME_EXIT = 1,
+	RECORD_VIEW = 2
+};
+
+
+
 typedef struct Ball {
 	short speed = 1;
 	bool fall_down = TRUE;
