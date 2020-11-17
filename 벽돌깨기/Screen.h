@@ -24,10 +24,12 @@ string Color_Code_Generator(string object, short color);
 
 class Screen {
 public:
+	Screen(DoubleBuffering* dbuff_arg);
 	void Print_Time_Limit(DoubleBuffering* dbuff, COORD score_box_xy, int time);
 	void Print_Crashed_Block_Num(DoubleBuffering* dbuff, COORD score_box_xy, int score);
 	void Print_Remain_Block_Num(DoubleBuffering* dbuff, COORD score_box_xy, SWall* swall, int size);
 protected:
+	DoubleBuffering* dbuff;
 	void Print_Score_Board_Info(DoubleBuffering* dbuff, string str, COORD score_box_xy, COORD line_xy);
 	void Print_Map_Boundary(DoubleBuffering* dbuff, Box box);
 	void Print_Score_Board(DoubleBuffering* dbuff, Score_Box score_box);

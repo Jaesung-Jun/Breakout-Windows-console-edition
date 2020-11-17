@@ -76,6 +76,7 @@ int main() {
 				time_limit *= 30;
 			}
 			else if (game_status == 1 && key.Game_Status_Choose_Check()) {
+				delete swall;
 				return 0;
 			}
 			else if (game_status == 2) {

@@ -33,6 +33,10 @@ string Color_Code_Generator(string object, short color) {
 	return color_code;
 }
 
+Screen::Screen(DoubleBuffering* dbuff) {
+	
+}
+
 void Screen::Print_Time_Limit(DoubleBuffering* dbuff, COORD score_box_xy, int time_limit) {
 	if (time_limit/30 > 10) {
 		Print_Score_Board_Info(dbuff, "남은 시간 : " + std::to_string((time_limit / 30)) + "초", score_box_xy, { 7, 5 });
