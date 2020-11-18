@@ -1,5 +1,15 @@
 #pragma once
 #include <Windows.h>
+
+#define WALL "бс"
+#define PLAYER  "="
+#define BALL  "@"
+#define DESTROYABLE_WALL "#"
+
+#define DEFAULT_PLAYER_LENGTH 12
+#define MAIN_SCREEN_X 130
+#define MAIN_SCREEN_Y 80
+
 #define DEFAULT_PLAYER_LENGTH 12
 
 #define DEFAULT_BOX_SIZE_X 45

@@ -6,19 +6,28 @@ int main() {
 
 	DoubleBuffering dbuff = DoubleBuffering(MAIN_SCREEN_X, MAIN_SCREEN_Y);
 
-	Object obj;
-	Keyboard key;
-	
-	Main_Screen screen;
-	Player player;
-	
+	/********************** Struct **********************/
+
 	Box box;
 	Score_Box score_box;
 
 	Ball ball;
 	Wall wall;
-	
+
 	SWall* swall;
+
+	/****************************************************/
+
+	/******************** Class *************************/
+	
+	Object obj;
+	Keyboard key;
+	
+	Main_Screen main_screen;
+	Screen screen = Screen(&dbuff);
+	Player player;
+
+	/****************************************************/
 
 	SetConsoleTitle(L"Break Out");
 
@@ -40,16 +49,18 @@ int main() {
 	while (1) {
 		while (!game_start) {
 			game_status = key.Game_Status_Choose(game_status);
-			screen.Print_Start_Screen(&dbuff, &key, game_status);
+			main_screen.Print_Start_Screen(&dbuff, &key, game_status);
 			if (game_status == 0 && key.Game_Status_Choose_Check()) {
 				while (!game_over) {					//Game Start!!
 					if (GetAsyncKeyState(VK_SPACE) < 0) {
 						game_start_trigger = FALSE;
 					}
-					screen.Print_Main_Screen(&dbuff, box, score_box);
-					screen.Print_Time_Limit(&dbuff, score_box.xy, time_limit);
-					screen.Print_Crashed_Block_Num(&dbuff, score_box.xy, player.score);
-					screen.Print_Remain_Block_Num(&dbuff, score_box.xy, swall, wall.nblocks);
+					screen.Print_Map_Boundary(box);
+					screen.Print_Score_Board(score_box);
+
+					screen.Print_Time_Limit(score_box.xy, time_limit);
+					screen.Print_Crashed_Block_Num(score_box.xy, player.score);
+					screen.Print_Remain_Block_Num(score_box.xy, swall, wall.nblocks);
 
 					obj.Print_Player(&dbuff, &player, key, box);
 					obj.Print_Ball(&dbuff, &ball, box, &player, key);
