@@ -4,7 +4,6 @@ using namespace std;
 
 int main() {
 
-	DoubleBuffering dbuff = DoubleBuffering(MAIN_SCREEN_X, MAIN_SCREEN_Y);
 
 	/********************** Struct **********************/
 
@@ -14,18 +13,26 @@ int main() {
 	Ball ball;
 	Wall wall;
 
-	SWall* swall;
-
-	/****************************************************/
+	Player player;
 
 	/******************** Class *************************/
-	
-	Object obj;
+
+	DoubleBuffering dbuff = DoubleBuffering(MAIN_SCREEN_X, MAIN_SCREEN_Y);
+
 	Keyboard key;
-	
-	Main_Screen main_screen;
+
+	Main_Screen main_screen = Main_Screen(&dbuff);
 	Screen screen = Screen(&dbuff);
-	Player player;
+
+	/********************** Object *********************/
+
+	Object obj = Object(&dbuff);
+
+	obj_Player obj_player = obj_Player(&player);
+	short default_direction[4] = { TRUE, FALSE, FALSE, FALSE };
+	COORD default_direction_xy = { -1, -1 };
+	obj_Ball obj_ball = obj_Ball(&ball, default_direction, default_direction_xy, 1);
+	obj_Destroyable_Wall obj_destroyable_wall = obj_Destroyable_Wall(&wall, box);
 
 	/****************************************************/
 
@@ -41,15 +48,13 @@ int main() {
 
 	const COORD default_ball_xy = { (player.xy.X + (player.length / 2)), player.xy.Y - 1 };
 
-	swall = obj.Config_Wall(&wall, box);
-
 	time_limit *= 30;
 
 	
 	while (1) {
 		while (!game_start) {
 			game_status = key.Game_Status_Choose(game_status);
-			main_screen.Print_Start_Screen(&dbuff, &key, game_status);
+			main_screen.Print_Start_Screen(&key, game_status);
 			if (game_status == 0 && key.Game_Status_Choose_Check()) {
 				while (!game_over) {					//Game Start!!
 					if (GetAsyncKeyState(VK_SPACE) < 0) {
@@ -60,12 +65,12 @@ int main() {
 
 					screen.Print_Time_Limit(score_box.xy, time_limit);
 					screen.Print_Crashed_Block_Num(score_box.xy, player.score);
-					screen.Print_Remain_Block_Num(score_box.xy, swall, wall.nblocks);
+					screen.Print_Remain_Block_Num(score_box.xy, wall.nblocks);
 
-					obj.Print_Player(&dbuff, &player, key, box);
-					obj.Print_Ball(&dbuff, &ball, box, &player, key);
-					obj.Print_Wall(&dbuff, &wall, swall, box);
-					obj.Crash_Wall(&ball, &wall, swall, &player);
+					obj_player.Print_Player(key, box);
+					obj_ball.Print_Ball(&ball, box, &player, key);
+					obj_destroyable_wall.Print_Wall(&wall, box);
+					obj_destroyable_wall.Crash_Wall(&ball, &wall, &player);
 
 					dbuff.Flip_Buffer(1);
 					dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
@@ -87,7 +92,7 @@ int main() {
 				time_limit *= 30;
 			}
 			else if (game_status == 1 && key.Game_Status_Choose_Check()) {
-				delete swall;
+				obj_destroyable_wall.Delete_Swall();
 				return 0;
 			}
 			else if (game_status == 2) {
@@ -97,6 +102,6 @@ int main() {
 			dbuff.CleanUp_Buffer(MAIN_SCREEN_X, MAIN_SCREEN_Y);
 		}								
 	}
-	delete swall;
+	obj_destroyable_wall.Delete_Swall();
 	return 0;
 }

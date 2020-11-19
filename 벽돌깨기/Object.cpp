@@ -1,27 +1,32 @@
 #include "Object.h"
 
-
-void obj_Ball::Print_Reset_Ball(DoubleBuffering* dbuff, Keyboard key, Ball* ball) {
-	dbuff->Write_Buffer({ ball->xy.X, ball->xy.Y }, BALL);
-	key.Player_Ball_Input(ball); //Space키를 입력받으면 ball.fall_down을 FALSE로 바꾸고 기본 세팅까지 완료함.
+Object::Object(DoubleBuffering *_dbuff) {
+	dbuff = _dbuff;
 }
 
-void obj_Player::Print_Player(DoubleBuffering* dbuff, Player *player, Keyboard key, Box box) {
+obj_Player::obj_Player(Player *_player) : Object(dbuff) {
+	player = _player;
+	player->xy = { ((DEFAULT_BOX_SIZE_X + DEFAULT_BOX_X) * 2) / 2, 50 };
+	player->score = 0;
+	player->length = DEFAULT_PLAYER_LENGTH;
+}
 
-	key.Player_X_Input(&(player->xy.X));
-
+void obj_Player::Crash_Player(Box box) {
 	if ((player->xy.X + player->length) >= box.size.X * 2 + box.xy.X + 1) {
 		player->xy.X -= 2;
 	}
 	else if ((player->xy.X) <= box.xy.X - 1) {
 		player->xy.X += 2;
 	}
-
-	for (short i = 0; i < player->length; i++) {
-		dbuff->Write_Buffer({ player->xy.X + i, player->xy.Y }, PLAYER);
-	}
 }
-void obj_Destroyable_Wall::Print_Wall(DoubleBuffering* dbuff, Wall* wall, SWall* swall, Box box) {
+
+void obj_Player::Print_Player(Keyboard key, Box box) {
+	key.Player_X_Input(&(player->xy.X));
+	Crash_Player(box);
+	dbuff->Write_Buffer({ player->xy.X, player->xy.Y }, Repeat_Str(PLAYER, player->length));
+}
+
+void obj_Destroyable_Wall::Print_Wall(Wall* wall, Box box) {
 	char* color_wall = DESTROYABLE_WALL;
 
 	for (short i = 0; i < wall->nblocks; i++) {
@@ -37,7 +42,7 @@ void obj_Destroyable_Wall::Print_Wall(DoubleBuffering* dbuff, Wall* wall, SWall*
 	////////////////////////////////////////////////////////
 }
 
-void obj_Destroyable_Wall::Crash_Wall(Ball* ball, Wall* wall, SWall* swall, Player* player) {
+void obj_Destroyable_Wall::Crash_Wall(Ball* ball, Wall* wall, Player* player) {
 	Sound sound;
 	BallMovement ball_move;
 	for (short i = 0; i < wall->nblocks; i++) {
@@ -61,7 +66,7 @@ void obj_Destroyable_Wall::Crash_Wall(Ball* ball, Wall* wall, SWall* swall, Play
 	std::string debug1 = std::to_string(wall->nblocks);
 }
 
-SWall* obj_Destroyable_Wall::Config_Wall(Wall* wall, Box box) {
+obj_Destroyable_Wall::obj_Destroyable_Wall(Wall* _wall, Box box) : Object(dbuff) {
 	/*
 	wall->nblocks = (((box.size.X * 2) / wall->block_length)) * (wall->height);
 	wall->width = (((box.size.X * 2) / wall->block_length));
@@ -84,9 +89,10 @@ SWall* obj_Destroyable_Wall::Config_Wall(Wall* wall, Box box) {
 	num_blocks++;
 	}
 	}*/
-
+	wall = _wall;
 	wall->nblocks = ((box.size.X * 2) / wall->block_length) * (wall->height);
-	SWall* swall = new SWall[wall->nblocks]{}; //delete 부분
+	
+	swall = new SWall[wall->nblocks]{};
 
 	int l = 0;
 	short color = 0;
@@ -109,61 +115,98 @@ SWall* obj_Destroyable_Wall::Config_Wall(Wall* wall, Box box) {
 			}
 		}
 	}
-
-	return swall;
 }
-void obj_Ball::Print_Ball(DoubleBuffering* dbuff, Ball *ball, Box box, Player* player, Keyboard key) {
+
+int obj_Destroyable_Wall::Remain_Walls() {
+	int remain_blocks = 0;
+	for (int i = 0; i < wall->nblocks; i++) {
+		if (swall[i].is_crashed == FALSE) {
+			remain_blocks++;
+		}
+	}
+	return remain_blocks;
+}
+
+void obj_Destroyable_Wall::Delete_Swall() {
+	delete swall;
+}
+
+obj_Ball::obj_Ball(Ball *_ball, short direction[4], COORD direction_xy, short speed = 1) : Object(dbuff) {
+	ball = _ball;
+
+	ball->speed = speed;
+	ball->fall_down = TRUE;
+	ball->upbound = FALSE;
+	for (int i = 0; i < 4; i++) {
+		ball->direction[i] = direction[i];
+	}
+}
+
+
+void obj_Ball::Print_Reset_Ball(Keyboard key, Ball* ball) {
+	dbuff->Write_Buffer({ ball->xy.X, ball->xy.Y }, BALL);
+	key.Player_Ball_Input(ball); //Space키를 입력받으면 ball.fall_down을 FALSE로 바꾸고 기본 세팅까지 완료함.
+}
+
+void obj_Ball::Crash_Ball(Ball *ball, Box box, Player* player) {
+	
+	BallMovement ball_move;
 
 	Sound sound;
 
-	if (ball->fall_down) {
-		ball->xy = { (player->xy.X + (player->length / 2)), player->xy.Y - 1 };
-		Print_Reset_Ball(dbuff, key, ball);
+	if ((ball->xy.X) >= box.size.X * 2 + box.xy.X - 3) { //오른쪽벽
+		ball->xy.X -= ball->speed;
+		ball->upbound = FALSE;
+		ball_move.vec_direction(ball, TRUE);
 	}
-	else if (!ball->fall_down) {
-		BallMovement ball_move;
 
-		if ((ball->xy.X) >= box.size.X * 2 + box.xy.X - 3) { //오른쪽벽
-			ball->xy.X -= ball->speed;
-			ball->upbound = FALSE;
-			ball_move.vec_direction(ball, TRUE);
-		}
+	else if (ball->xy.X <= box.xy.X + 1) { //왼쪽벽
+		ball->xy.X += ball->speed;
+		ball->upbound = FALSE;
+		ball_move.vec_direction(ball);
+	}
 
-		else if (ball->xy.X <= box.xy.X + 1) { //왼쪽벽
-			ball->xy.X += ball->speed;
-			ball->upbound = FALSE;
-			ball_move.vec_direction(ball);
-		}
-
-		if (ball->xy.Y <= box.xy.Y + 1) { //위쪽 벽에 부딪치면
-			ball->xy.Y += ball->speed;
-			ball->upbound = TRUE;
-			ball_move.vec_direction(ball);
-		}
-		/*
-		if (ball->xy.Y >= player.xy.Y - 1 && ball->xy.X <= (player.xy.X + player.length) && ball->xy.X >= (player.xy.X)) {
-		ball->xy.Y -= ball->speed;
+	if (ball->xy.Y <= box.xy.Y + 1) { //위쪽 벽에 부딪치면
+		ball->xy.Y += ball->speed;
 		ball->upbound = TRUE;
 		ball_move.vec_direction(ball);
-		Beep(523, 50);
-		}*/
-		if (ball->xy.X <= (player->xy.X + player->length) && ball->xy.X >= (player->xy.X)) {
-			if (ball->xy.Y >= player->xy.Y - 1 && !(ball->xy.Y >= player->xy.Y + 1)) {
-				ball->xy.Y -= ball->speed;
-				ball->upbound = TRUE;
-				ball_move.vec_direction(ball);
-				sound.up_pitch_play(50, 50, 1);
-			}
-		}
-		if ((ball->xy.Y) >= box.size.Y + box.xy.Y) { //아래쪽 벽에 
-			player->score -= 10;
-			if (player->score < 0)
-				player->score = 0;
+	}
+	/*
+	if (ball->xy.Y >= player.xy.Y - 1 && ball->xy.X <= (player.xy.X + player.length) && ball->xy.X >= (player.xy.X)) {
+	ball->xy.Y -= ball->speed;
+	ball->upbound = TRUE;
+	ball_move.vec_direction(ball);
+	Beep(523, 50);
+	}*/
+	if (ball->xy.X <= (player->xy.X + player->length) && ball->xy.X >= (player->xy.X)) {
+		if (ball->xy.Y >= player->xy.Y - 1 && !(ball->xy.Y >= player->xy.Y + 1)) {
 			ball->xy.Y -= ball->speed;
-			ball->fall_down = TRUE;
-			//ptr_direction = ball_move.vec_direction(ball->direction, ball->upbound, FALSE);
-			//ball_move.find_direction(ball, ptr_direction);
+			ball->upbound = TRUE;
+			ball_move.vec_direction(ball);
+			sound.up_pitch_play(50, 50, 1);
 		}
+	}
+	if ((ball->xy.Y) >= box.size.Y + box.xy.Y) { //아래쪽 벽에 
+		player->score -= 10;
+		if (player->score < 0)
+			player->score = 0;
+		ball->xy.Y -= ball->speed;
+		ball->fall_down = TRUE;
+		//ptr_direction = ball_move.vec_direction(ball->direction, ball->upbound, FALSE);
+		//ball_move.find_direction(ball, ptr_direction);
+	}
+
+}
+
+void obj_Ball::Print_Ball(Ball *ball, Box box, Player* player, Keyboard key) {
+
+	if (ball->fall_down) {
+		ball->xy = { (player->xy.X + (player->length / 2)), player->xy.Y - 1 };
+		Print_Reset_Ball(key, ball);
+	}
+	else if (!ball->fall_down) {
+		
+		Crash_Ball(ball, box, player);
 
 		ball->xy.X = (ball->xy.X + (ball->direction_xy.X * ball->speed));
 		ball->xy.Y = (ball->xy.Y + (ball->direction_xy.Y * ball->speed));

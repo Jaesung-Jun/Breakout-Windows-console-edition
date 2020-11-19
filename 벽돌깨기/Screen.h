@@ -1,4 +1,5 @@
-﻿#include <string>
+﻿#pragma once
+#include <string>
 #include "DoubleBuffering.h"
 #include "KeyboardInput.h"
 #include "ColorCode.h"
@@ -18,10 +19,10 @@ class Screen {
 private:
 	DoubleBuffering* dbuff;
 public:
-	Screen(DoubleBuffering *dbuff);
+	Screen(DoubleBuffering *_dbuff);
 	void Print_Time_Limit(COORD score_box_xy, int time);
 	void Print_Crashed_Block_Num(COORD score_box_xy, int score);
-	void Print_Remain_Block_Num(COORD score_box_xy, SWall* swall, int size);
+	void Print_Remain_Block_Num(COORD score_box_xy, int remain_blocks);
 	void Print_Score_Board_Info(string str, COORD score_box_xy, COORD line_xy);
 	void Print_Map_Boundary(Box box);
 	void Print_Score_Board(Score_Box score_box);
@@ -29,8 +30,10 @@ public:
 
 class Main_Screen {
 private:
-	void Print_Main_Title(DoubleBuffering* dbuff, Keyboard *key, short status);
+	DoubleBuffering* dbuff;
+	void Print_Main_Title(Keyboard *key, short status);
 public:
-	void Print_Start_Screen(DoubleBuffering *dbuff, Keyboard *key, short status);
-	void Print_GameOver_Screen(DoubleBuffering *dbuff, Keyboard *key);
+	Main_Screen(DoubleBuffering *_dbuff);
+	void Print_Start_Screen(Keyboard *key, short status);
+	void Print_GameOver_Screen(Keyboard *key);
 };

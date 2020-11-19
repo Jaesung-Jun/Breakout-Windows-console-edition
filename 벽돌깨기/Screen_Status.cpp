@@ -3,8 +3,7 @@
 #include "KeyboardInput.h"
 using namespace std;
 
-void Main_Screen::Print_Main_Title(DoubleBuffering* dbuff, Keyboard *key, short status) {
-	Sound sound;
+void Main_Screen::Print_Main_Title(Keyboard *key, short status) {
 	int color_code1 = 0;
 	int color_code2 = 0;
 	srand((unsigned int)time(0));

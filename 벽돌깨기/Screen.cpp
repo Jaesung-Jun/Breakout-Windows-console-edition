@@ -33,8 +33,8 @@ string Color_Code_Generator(string object, short color) {
 	return color_code;
 }
 
-Screen::Screen(DoubleBuffering *dbuff) {
-	this->dbuff = dbuff;
+Screen::Screen(DoubleBuffering *_dbuff) {
+	dbuff = _dbuff;
 }
 
 void Screen::Print_Time_Limit(COORD score_box_xy, int time_limit) {
@@ -50,13 +50,7 @@ void Screen::Print_Crashed_Block_Num(COORD score_box_xy, int score) {
 	Print_Score_Board_Info("점수 : " + std::to_string(score), score_box_xy, { 7, 7 });
 }
 
-void Screen::Print_Remain_Block_Num(COORD score_box_xy, SWall* swall, int size) {
-	int remain_blocks = 0;
-	for (int i = 0; i < size; i++) {
-		if (swall[i].is_crashed == FALSE) {
-			remain_blocks++;
-		}
-	}
+void Screen::Print_Remain_Block_Num(COORD score_box_xy, int remain_blocks) {
 	Print_Score_Board_Info("남은 블럭 : " + std::to_string(remain_blocks), score_box_xy, { 7, 8 });
 }
 
@@ -94,7 +88,7 @@ void Screen::Print_Score_Board(Score_Box score_box) {
 	}
 }
 
-void Main_Screen::Print_Start_Screen(DoubleBuffering *dbuff, Keyboard *key, short status) {
+void Main_Screen::Print_Start_Screen(Keyboard *key, short status) {
 	for (short i = 0; i < 131; i++) {
 		dbuff->Write_Buffer({ i, 0 }, WALL_ANSI_COLOR_GREEN);
 	}
@@ -107,10 +101,14 @@ void Main_Screen::Print_Start_Screen(DoubleBuffering *dbuff, Keyboard *key, shor
 	for (short i = 1; i < 60; i++) {
 		dbuff->Write_Buffer({130, i}, WALL_ANSI_COLOR_GREEN);
 	}
-	Print_Main_Title(dbuff, key, status);
+	Print_Main_Title(key, status);
 }
 
 
-void Main_Screen::Print_GameOver_Screen(DoubleBuffering *dbuff, Keyboard *key) {
+void Main_Screen::Print_GameOver_Screen(Keyboard *key) {
 
+}
+
+Main_Screen::Main_Screen(DoubleBuffering *_dbuff) {
+	dbuff = _dbuff;
 }
