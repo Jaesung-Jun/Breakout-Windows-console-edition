@@ -6,11 +6,15 @@
 #define BALL  "@"
 #define DESTROYABLE_WALL "#"
 
-#define DEFAULT_PLAYER_LENGTH 12
-#define MAIN_SCREEN_X 130
-#define MAIN_SCREEN_Y 80
+#define GAME_OVER_X 7
+#define GAME_OVER_Y 20
+#define GAME_OVER_SIZE_X 40
+#define GAME_OVER_SIZE_Y 15
 
 #define DEFAULT_PLAYER_LENGTH 12
+#define MAIN_SCREEN_X 130
+#define MAIN_SCREEN_Y 61
+
 
 #define DEFAULT_BOX_SIZE_X 45
 #define DEFAULT_BOX_SIZE_Y 55
@@ -35,7 +39,11 @@ enum class GAMESTATUS {
 	RECORD_VIEW = 2
 };
 
-
+enum class GAMESTATUS_GAMEOVER {
+	RETRY = 0,
+	SAVE_RECORD = 1,
+	EXIT = 2,
+};
 
 typedef struct Ball {
 	short speed = 1;

@@ -16,6 +16,6 @@ private:
 public:
 	void Player_X_Input(short *x);
 	void Player_Ball_Input(Ball* ball);
-	short Game_Status_Choose(short status);
+	short Game_Status_Choose(short status, int end_num);
 	bool Game_Status_Choose_Check();
 };

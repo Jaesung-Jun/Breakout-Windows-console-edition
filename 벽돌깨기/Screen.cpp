@@ -10,22 +10,19 @@
 *		
 **************************************************************************/
 
-string Repeat_Str(string s, int n) {
-	string s1 = s;
-	for (int i = 0; i < n; i++) {
-		s += s1;
+void Print_Box(DoubleBuffering *dbuff, short x, short y, short size_x, short size_y, string block) {
+	for (short i = 0; i < size_x * 2 - 1; i++) {
+		dbuff->Write_Buffer({ i + x, y }, block);
 	}
-	return s;
-}
-
-short Color_Set(short color) {
-	if (color > 9) {
-		color = 1;
+	for (short i = 1; i < size_y; i++) {
+		dbuff->Write_Buffer({ x, i + y }, block);
 	}
-	else {
-		color++;
+	for (short i = 0; i < size_x * 2 - 1; i++) {
+		dbuff->Write_Buffer({ i + x, size_y + y }, block);
 	}
-	return color;
+	for (short i = 1; i < size_y; i++) {
+		dbuff->Write_Buffer({ (size_x * 2 - 2 + x), i + y }, block);
+	}
 }
 
 string Color_Code_Generator(string object, short color) {
@@ -59,6 +56,7 @@ void Screen::Print_Score_Board_Info(string str, COORD score_box_xy, COORD line_x
 }
 
 void Screen::Print_Map_Boundary(Box box) {
+	/*
 	for (short i = 0; i < box.size.X * 2 - 1; i++) {
 		dbuff->Write_Buffer({ i + box.xy.X, box.xy.Y }, WALL_ANSI_COLOR_CYAN);
 	}
@@ -70,11 +68,12 @@ void Screen::Print_Map_Boundary(Box box) {
 	}
 	for (short i = 1; i < box.size.Y; i++) {
 		dbuff->Write_Buffer({ (box.size.X * 2 - 2 + box.xy.X), i + box.xy.Y }, WALL_ANSI_COLOR_CYAN);
-	}
+	}*/
+	Print_Box(dbuff, box.xy.X, box.xy.Y, box.size.X, box.size.Y, WALL_ANSI_COLOR_CYAN);
 }
 
 void Screen::Print_Score_Board(Score_Box score_box) {
-	for (short i = 0; i < score_box.size.X * 2 - 1; i++) {
+	/*for (short i = 0; i < score_box.size.X * 2 - 1; i++) {
 		dbuff->Write_Buffer({ i + score_box.xy.X, score_box.xy.Y }, WALL);
 	}
 	for (short i = 1; i < score_box.size.Y; i++) {
@@ -85,28 +84,46 @@ void Screen::Print_Score_Board(Score_Box score_box) {
 	}
 	for (short i = 1; i < score_box.size.Y; i++) {
 		dbuff->Write_Buffer({ (score_box.size.X * 2 - 2 + score_box.xy.X), i + score_box.xy.Y }, WALL);
-	}
+	}*/
+	Print_Box(dbuff, score_box.xy.X, score_box.xy.Y, score_box.size.X, score_box.size.Y, WALL);
 }
 
 void Main_Screen::Print_Start_Screen(Keyboard *key, short status) {
-	for (short i = 0; i < 131; i++) {
+	/*for (short i = 0; i < MAIN_SCREEN_X+1; i++) {
 		dbuff->Write_Buffer({ i, 0 }, WALL_ANSI_COLOR_GREEN);
 	}
-	for (short i = 1; i < 60; i++) {
+	for (short i = 1; i < MAIN_SCREEN_Y-1; i++) {
 		dbuff->Write_Buffer({ 0, i }, WALL_ANSI_COLOR_GREEN);
 	}
-	for (short i = 0; i < 131; i++) {
-		dbuff->Write_Buffer({ i, 59 }, WALL_ANSI_COLOR_GREEN);
+	for (short i = 0; i < MAIN_SCREEN_X+1; i++) {
+		dbuff->Write_Buffer({ i, MAIN_SCREEN_Y-2 }, WALL_ANSI_COLOR_GREEN);
 	}
-	for (short i = 1; i < 60; i++) {
-		dbuff->Write_Buffer({130, i}, WALL_ANSI_COLOR_GREEN);
-	}
+	for (short i = 1; i < MAIN_SCREEN_Y - 1; i++) {
+		dbuff->Write_Buffer({ MAIN_SCREEN_X, i }, WALL_ANSI_COLOR_GREEN);
+	}*/
+	Print_Box(dbuff, 0, 0, MAIN_SCREEN_X/2+1, MAIN_SCREEN_Y-2, WALL_ANSI_COLOR_GREEN);
 	Print_Main_Title(key, status);
 }
 
 
-void Main_Screen::Print_GameOver_Screen(Keyboard *key) {
-
+void Main_Screen::Print_GameOver_Screen(Keyboard *key, short status) {
+	//size X : 40, size Y = 10
+	//X : 45, Y : 25
+	/*
+	for (short i = 0; i < GAME_OVER_SIZE_X * 2 - 1; i++) {
+		dbuff->Write_Buffer({ i + GAME_OVER_X, GAME_OVER_Y }, WALL);
+	}
+	for (short i = 1; i < GAME_OVER_SIZE_Y; i++) {
+		dbuff->Write_Buffer({ GAME_OVER_X, i + GAME_OVER_Y }, WALL);
+	}
+	for (short i = 0; i < GAME_OVER_SIZE_X * 2 - 1; i++) {
+		dbuff->Write_Buffer({ i + GAME_OVER_X,GAME_OVER_SIZE_Y + GAME_OVER_Y}, WALL);
+	}
+	for (short i = 1; i < GAME_OVER_SIZE_Y; i++) {
+		dbuff->Write_Buffer({ (GAME_OVER_SIZE_X * 2 - 2 + GAME_OVER_X), i + GAME_OVER_Y }, WALL);
+	}*/
+	Print_Box(dbuff, GAME_OVER_X, GAME_OVER_Y, GAME_OVER_SIZE_X, GAME_OVER_SIZE_Y, WALL_ANSI_COLOR_GREEN);
+	Print_GameOver_String(key, status);
 }
 
 Main_Screen::Main_Screen(DoubleBuffering *_dbuff) {

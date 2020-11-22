@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BallMovement.cpp" />
+    <ClCompile Include="GetConfig.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="BallMovement.h" />
     <ClInclude Include="ColorCode.h" />
     <ClInclude Include="DoubleBuffering.h" />
+    <ClInclude Include="GetConfig.h" />
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Screen.h" />

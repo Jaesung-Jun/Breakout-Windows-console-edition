@@ -1,4 +1,4 @@
-#include "Screen.h"
+ï»¿#include "Screen.h"
 #include <ctime>
 #include "KeyboardInput.h"
 using namespace std;
@@ -56,7 +56,7 @@ void Main_Screen::Print_Main_Title(Keyboard *key, short status) {
 	dbuff->Write_Buffer({ 26, 45 }, Color_Code_Generator(" \\$$$$$$$  \\$$        \\$$$$$$$  \\$$$$$$$ \\$$   \\$$  \\$$$$$$   \\$$$$$$     \\$$$$ ", color_code2));
 	dbuff->Write_Buffer({ 54, 53 }, "Made By Jae-sung Jun");
 	dbuff->Write_Buffer({ 45, 57 }, "https://github.com/Jaesung-Jun/Breakout");
-	dbuff->Write_Buffer({ 47, 55 }, "2020 2ÇÐ±â °´Ã¼ÁöÇâ ÇÁ·Î±×·¡¹Ö °úÁ¦");
+	dbuff->Write_Buffer({ 47, 55 }, "2020 2í•™ê¸° ê°ì²´ì§€í–¥ í”„ë¡œê·¸ëž˜ë° ê³¼ì œ");
 	dbuff->Write_Buffer({ 30, 50 }, "GAME START");
 	dbuff->Write_Buffer({ 60, 50 }, "GAME EXIT");
 	dbuff->Write_Buffer({ 90, 50 }, "RECORD VIEW");
@@ -73,5 +73,28 @@ void Main_Screen::Print_Main_Title(Keyboard *key, short status) {
 	else if (status == (int)GAMESTATUS::RECORD_VIEW) {
 		dbuff->Write_Buffer({ 89, 50 }, ">");
 		dbuff->Write_Buffer({ 90, 50 }, Color_Code_Generator("RECORD VIEW", 1));
+	}
+}
+
+void Main_Screen::Print_GameOver_String(Keyboard *key, short status) {
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 4, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 -2},   ".__ .__..  ..___  .__..  ..___.__ ");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 4, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 -1},   "[ __[__]|\\/|[__   |  |\\  /[__ [__)");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 4, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2},      "[_./|  ||  |[___  |__| \\/ [___|  \\");
+
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 , GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, "RETRY");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 15, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, "SAVE RECORD");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 37, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, "EXIT");
+
+	if (status == (int)GAMESTATUS_GAMEOVER::RETRY) {
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 - 1, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, ">");
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 , GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, Color_Code_Generator("RETRY", 1));
+	}
+	else if (status == (int)GAMESTATUS_GAMEOVER::SAVE_RECORD) {
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 14, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, ">");
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 15, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, Color_Code_Generator("SAVE RECORD", 1));
+	}
+	else if (status == (int)GAMESTATUS_GAMEOVER::EXIT) {
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 36, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, ">");
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 37, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, Color_Code_Generator("EXIT", 1));
 	}
 }

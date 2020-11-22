@@ -1,10 +1,27 @@
 #include "Object.h"
 
-Object::Object(DoubleBuffering *_dbuff) {
-	dbuff = _dbuff;
+
+string Object::Repeat_Str(string s, int n) {
+	string s1 = s;
+	for (int i = 0; i < n; i++) {
+		s += s1;
+	}
+	return s;
 }
 
-obj_Player::obj_Player(Player *_player) : Object(dbuff) {
+short Object::Color_Set(short color) {
+	if (color > 9) {
+		color = 1;
+	}
+	else {
+		color++;
+	}
+	return color;
+}
+
+
+obj_Player::obj_Player(DoubleBuffering *_dbuff, Player *_player){
+	dbuff = _dbuff;
 	player = _player;
 	player->xy = { ((DEFAULT_BOX_SIZE_X + DEFAULT_BOX_X) * 2) / 2, 50 };
 	player->score = 0;
@@ -66,7 +83,7 @@ void obj_Destroyable_Wall::Crash_Wall(Ball* ball, Wall* wall, Player* player) {
 	std::string debug1 = std::to_string(wall->nblocks);
 }
 
-obj_Destroyable_Wall::obj_Destroyable_Wall(Wall* _wall, Box box) : Object(dbuff) {
+obj_Destroyable_Wall::obj_Destroyable_Wall(DoubleBuffering *_dbuff, Wall* _wall, Box box){
 	/*
 	wall->nblocks = (((box.size.X * 2) / wall->block_length)) * (wall->height);
 	wall->width = (((box.size.X * 2) / wall->block_length));
@@ -89,6 +106,7 @@ obj_Destroyable_Wall::obj_Destroyable_Wall(Wall* _wall, Box box) : Object(dbuff)
 	num_blocks++;
 	}
 	}*/
+	dbuff = _dbuff;
 	wall = _wall;
 	wall->nblocks = ((box.size.X * 2) / wall->block_length) * (wall->height);
 	
@@ -131,15 +149,9 @@ void obj_Destroyable_Wall::Delete_Swall() {
 	delete swall;
 }
 
-obj_Ball::obj_Ball(Ball *_ball, short direction[4], COORD direction_xy, short speed = 1) : Object(dbuff) {
+obj_Ball::obj_Ball(DoubleBuffering *_dbuff, Ball *_ball){
+	dbuff = _dbuff;
 	ball = _ball;
-
-	ball->speed = speed;
-	ball->fall_down = TRUE;
-	ball->upbound = FALSE;
-	for (int i = 0; i < 4; i++) {
-		ball->direction[i] = direction[i];
-	}
 }
 
 

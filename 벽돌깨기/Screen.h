@@ -11,9 +11,8 @@
 using namespace std;
 //https://tikcode.tistory.com/4
 
-string Repeat_Str(string s, int n);
-short Color_Set(short color);
 string Color_Code_Generator(string object, short color);
+void Print_Box(DoubleBuffering *dbuff, short x, short y, short size_x, short size_y, string block);
 
 class Screen {
 private:
@@ -32,8 +31,9 @@ class Main_Screen {
 private:
 	DoubleBuffering* dbuff;
 	void Print_Main_Title(Keyboard *key, short status);
+	void Print_GameOver_String(Keyboard *key, short status);
 public:
 	Main_Screen(DoubleBuffering *_dbuff);
 	void Print_Start_Screen(Keyboard *key, short status);
-	void Print_GameOver_Screen(Keyboard *key);
+	void Print_GameOver_Screen(Keyboard *key, short status);
 };

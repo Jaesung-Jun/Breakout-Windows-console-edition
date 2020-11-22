@@ -19,7 +19,6 @@ public:
 		hBuffer[0] = { CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL) };
 		hBuffer[1] = { CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL) };
 
-
 		SetConsoleScreenBufferSize(hBuffer[0], size); // Console Buffer Size Set
 		SetConsoleWindowInfo(hBuffer[0], TRUE, &window_size); //Console Size Set
 
