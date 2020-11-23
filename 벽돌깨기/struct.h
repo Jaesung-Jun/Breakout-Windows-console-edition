@@ -1,5 +1,8 @@
 #pragma once
 #include <Windows.h>
+using namespace std;
+
+#define DEFAULT_PLAYER_NAME "Default"
 
 #define WALL "бс"
 #define PLAYER  "="
@@ -14,7 +17,6 @@
 #define DEFAULT_PLAYER_LENGTH 12
 #define MAIN_SCREEN_X 130
 #define MAIN_SCREEN_Y 61
-
 
 #define DEFAULT_BOX_SIZE_X 45
 #define DEFAULT_BOX_SIZE_Y 55
@@ -33,7 +35,13 @@
 
 #define DEFAULT_BLOCK_LENGTH 5; //Recommended to set between 5 - 8 values.
 
+enum class GAMESTATUS_PAUSE {
+	START = 0,
+	EXIT = 1,
+};
+
 enum class GAMESTATUS {
+	NOTHING = -1,
 	GAME_START = 0,
 	GAME_EXIT = 1,
 	RECORD_VIEW = 2
@@ -56,9 +64,11 @@ typedef struct Ball {
 } Ball;
 
 typedef struct Player {
-	int score = 0;
+	float score = 0;
+	int destroyed_block = 0;
 	COORD xy = { ((DEFAULT_BOX_SIZE_X+DEFAULT_BOX_X)*2)/2, 50 };
 	short length = DEFAULT_PLAYER_LENGTH;
+	string name = "Default";
 } Player;
 
 typedef struct Box {
@@ -74,7 +84,6 @@ typedef struct SWall {
 } SWall;
 
 typedef struct Wall {
-	short width;
 	short height = DEFAULT_WALL_HEIGHT;
 	short block_length = DEFAULT_BLOCK_LENGTH;
 	short nblocks;

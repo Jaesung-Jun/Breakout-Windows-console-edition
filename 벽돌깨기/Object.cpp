@@ -24,15 +24,15 @@ obj_Player::obj_Player(DoubleBuffering *_dbuff, Player *_player){
 	dbuff = _dbuff;
 	player = _player;
 	player->xy = { ((DEFAULT_BOX_SIZE_X + DEFAULT_BOX_X) * 2) / 2, 50 };
-	player->score = 0;
+	player->destroyed_block = 0;
 	player->length = DEFAULT_PLAYER_LENGTH;
 }
 
 void obj_Player::Crash_Player(Box box) {
-	if ((player->xy.X + player->length) >= box.size.X * 2 + box.xy.X + 1) {
+	if ((player->xy.X + player->length) >= box.size.X * 2 + box.xy.X - 1) {
 		player->xy.X -= 2;
 	}
-	else if ((player->xy.X) <= box.xy.X - 1) {
+	else if ((player->xy.X) <= box.xy.X) {
 		player->xy.X += 2;
 	}
 }
@@ -76,11 +76,10 @@ void obj_Destroyable_Wall::Crash_Wall(Ball* ball, Wall* wall, Player* player) {
 					ball->upbound = FALSE;
 					ball_move.vec_direction(ball);
 				}
-				player->score++;
+				player->destroyed_block++;
 			}
 		}
 	}
-	std::string debug1 = std::to_string(wall->nblocks);
 }
 
 obj_Destroyable_Wall::obj_Destroyable_Wall(DoubleBuffering *_dbuff, Wall* _wall, Box box){
@@ -199,9 +198,9 @@ void obj_Ball::Crash_Ball(Ball *ball, Box box, Player* player) {
 		}
 	}
 	if ((ball->xy.Y) >= box.size.Y + box.xy.Y) { //아래쪽 벽에 
-		player->score -= 10;
-		if (player->score < 0)
-			player->score = 0;
+		//player->destroyed_block--;
+		if (player->destroyed_block < 0)
+			player->destroyed_block = 0;
 		ball->xy.Y -= ball->speed;
 		ball->fall_down = TRUE;
 		//ptr_direction = ball_move.vec_direction(ball->direction, ball->upbound, FALSE);

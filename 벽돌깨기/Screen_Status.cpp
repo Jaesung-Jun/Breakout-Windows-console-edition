@@ -98,3 +98,23 @@ void Main_Screen::Print_GameOver_String(Keyboard *key, short status) {
 		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 37, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, Color_Code_Generator("EXIT", 1));
 	}
 }
+void Main_Screen::Print_Pause_String(Keyboard *key, short status) {
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 - 8, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 - 3 }, " _____ ____  _      _____   ____  ____  _     ____  _____");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 - 8, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 - 2 }, "/  __//  _ \\/ \\__/|/  __/  /  __\\/  _ \\/ \\ /\\/ ___\\/  __/");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 - 8, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 - 1}, "| |  _| / \\|| |\\/|||  \\    |  \\/|| / \\|| | |||    \\|  \\  ");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 - 8, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2}, "| |_//| |-||| |  |||  /_   |  __/| |-||| \\_/|\\___ ||  /_ ");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 - 8, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 1}, "\\____\\\\_/ \\|\\_/  \\|\\____\\  \\_/   \\_/ \\|\\____/\\____/\\____\\");
+
+
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 5 , GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, "START");
+	dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 28, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, "EXIT");
+
+	if (status == (int)GAMESTATUS_PAUSE::START) {
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 4, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, ">");
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 5, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, Color_Code_Generator("START!", 1));
+	}
+	else if (status == (int)GAMESTATUS_PAUSE::EXIT) {
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 27, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, ">");
+		dbuff->Write_Buffer({ GAME_OVER_X + GAME_OVER_SIZE_X / 2 + 28, GAME_OVER_Y + GAME_OVER_SIZE_Y / 2 + 5 }, Color_Code_Generator("EXIT", 1));
+	}
+}

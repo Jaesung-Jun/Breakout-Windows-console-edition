@@ -144,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BallMovement.cpp" />
-    <ClCompile Include="GetConfig.cpp" />
+    <ClCompile Include="GetFile.cpp" />
     <ClCompile Include="KeyboardInput.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -162,12 +162,16 @@
     <ClInclude Include="BallMovement.h" />
     <ClInclude Include="ColorCode.h" />
     <ClInclude Include="DoubleBuffering.h" />
-    <ClInclude Include="GetConfig.h" />
+    <ClInclude Include="GetFile.h" />
     <ClInclude Include="KeyboardInput.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="struct.h" />
+    <ClInclude Include="to_string_modified.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="game_config.conf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

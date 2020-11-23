@@ -48,7 +48,6 @@ public:
 		FillConsoleOutputCharacter(hBuffer[screen_index], ' ', window_x*window_y, coord, &dw);
 	}
 
-
 	void Disable_Buffer() {
 		CloseHandle(hBuffer[0]);
 		CloseHandle(hBuffer[1]);
@@ -56,9 +55,9 @@ public:
 
 private:
 	HANDLE hBuffer[2];
-	bool screen_index;
-
 	void Move_Cursor(COORD CursorPosition) {
 		SetConsoleCursorPosition(hBuffer[screen_index], CursorPosition);
 	}
+	bool screen_index;
+
 };

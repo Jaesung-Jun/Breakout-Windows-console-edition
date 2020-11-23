@@ -1,5 +1,6 @@
 #include "Screen.h"
-
+#include <stdio.h>
+#include "to_string_modified.h"
 /*************************************************************************
 *									!NOTICE!
 * 
@@ -35,20 +36,25 @@ Screen::Screen(DoubleBuffering *_dbuff) {
 }
 
 void Screen::Print_Time_Limit(COORD score_box_xy, int time_limit) {
+	Print_Score_Board_Info("■■■■■■■■■■■■■■", score_box_xy, { 2, 9 });
 	if (time_limit/30 > 10) {
-		Print_Score_Board_Info("남은 시간 : " + std::to_string((time_limit / 30)) + "초", score_box_xy, { 7, 5 });
+		Print_Score_Board_Info(Color_Code_Generator("남은 시간 : ", 3) + std::to_string((time_limit / 30)) + "초", score_box_xy, { 7, 12 });
 	}
 	else {
-		Print_Score_Board_Info("남은 시간 : " + Color_Code_Generator(std::to_string(time_limit / 30), 1) + "초", score_box_xy, { 7, 5 });
+		Print_Score_Board_Info(Color_Code_Generator("남은 시간 : ", 3) + Color_Code_Generator(std::to_string(time_limit / 30), 1) + "초", score_box_xy, { 7, 12 });
 	}
 }
 
-void Screen::Print_Crashed_Block_Num(COORD score_box_xy, int score) {
-	Print_Score_Board_Info("점수 : " + std::to_string(score), score_box_xy, { 7, 7 });
+void Screen::Print_Crashed_Block_Num(COORD score_box_xy, int destroyed_blocks) {
+	Print_Score_Board_Info("부순 블럭 : " + std::to_string(destroyed_blocks), score_box_xy, { 7, 3 });
+}
+
+void Screen::Print_Player_Score(COORD score_box_xy, float score) {
+	Print_Score_Board_Info("점수 : " + to_string_with_precision(score, 0), score_box_xy, { 7, 5 });
 }
 
 void Screen::Print_Remain_Block_Num(COORD score_box_xy, int remain_blocks) {
-	Print_Score_Board_Info("남은 블럭 : " + std::to_string(remain_blocks), score_box_xy, { 7, 8 });
+	Print_Score_Board_Info("남은 블럭 : " + std::to_string(remain_blocks), score_box_xy, { 7, 7 });
 }
 
 void Screen::Print_Score_Board_Info(string str, COORD score_box_xy, COORD line_xy) {
@@ -124,6 +130,66 @@ void Main_Screen::Print_GameOver_Screen(Keyboard *key, short status) {
 	}*/
 	Print_Box(dbuff, GAME_OVER_X, GAME_OVER_Y, GAME_OVER_SIZE_X, GAME_OVER_SIZE_Y, WALL_ANSI_COLOR_GREEN);
 	Print_GameOver_String(key, status);
+}
+
+void Main_Screen::Print_Pause_Screen(Keyboard *key, short status) {
+	Print_Box(dbuff, GAME_OVER_X, GAME_OVER_Y, GAME_OVER_SIZE_X, GAME_OVER_SIZE_Y, WALL_ANSI_COLOR_GREEN);
+	Print_Pause_String(key, status);
+}
+
+void Main_Screen::Record_Save_Screen(GetConfig *getconfig, Keyboard *key, Player *player, float score, bool status) {
+	Print_Box(dbuff, 100, GAME_OVER_Y, 15, 15, WALL_ANSI_COLOR_MAGENTA);
+	dbuff->Write_Buffer({ 106, GAME_OVER_Y + 2 }, "Record Save Window");
+	dbuff->Write_Buffer({ 102, GAME_OVER_Y + 4 }, Color_Code_Generator("◆◆◆◆◆◆◆◆◆◆◆◆◆", 5));
+	dbuff->Write_Buffer({ 104, GAME_OVER_Y + 6 }, "Name : " + player->name);
+	dbuff->Write_Buffer({ 104, GAME_OVER_Y + 8 }, "Destroyed Blocks : " + to_string(player->destroyed_block));
+	dbuff->Write_Buffer({ 104, GAME_OVER_Y + 10 }, "Score : " + to_string(score));
+	if (status == TRUE) {
+		dbuff->Write_Buffer({ 112, GAME_OVER_Y + 13 }, Color_Code_Generator("Saved!", 1));
+		dbuff->Flip_Buffer();
+		Sleep(1000);
+	}
+	else if (status == FALSE) {
+		dbuff->Write_Buffer({ 106, GAME_OVER_Y + 13 }, Color_Code_Generator("Enter Key -> Save!", 1));
+	}
+
+	char key_s = key->Input_Alphabet();
+	if (key_s == 8) {
+		dbuff->Flip_Buffer();
+		player->name.clear();
+	}
+	else if (key_s == 'KM' || key_s == 'MK') {
+		if (player->name.length() != 0) {
+			player->name = getconfig->Read_Config_Player_Name();
+		}
+	}
+	else if (key_s == '\a' || player->name.size() > 9) { }
+	else {
+		player->name += key_s;
+	}
+}
+
+void Main_Screen::Record_View_Screen(GetRecord *getrecord) {
+	Print_Box(dbuff, 0, 0, MAIN_SCREEN_X / 2 + 1, MAIN_SCREEN_Y - 9, WALL_ANSI_COLOR_GREEN);
+	dbuff->Write_Buffer({ 10, 2 }, "[No.]\t|\t[UserName]\t[Destroyed Walls]\t[Score]\t\t[Time limit]\t[Player Length]");
+	dbuff->Write_Buffer({ 10, 3 }, "=======================================================================================================");
+	string *infos = getrecord->Read_Records();			//52개까지 
+	//dbuff->Write_Buffer({ 10, 3 }, to_string(getrecord->Read_Records_Num()));
+	short i = 0;
+	for (int j = 1; j < getrecord->Read_Records_Num(); j+=5) {
+		dbuff->Write_Buffer({ 10, i + 4 }, to_string(i) + "\t|");
+		dbuff->Write_Buffer({ 24, i + 4 }, infos[j - 1]);
+		dbuff->Write_Buffer({ 40, i + 4 }, infos[j]);
+		dbuff->Write_Buffer({ 64, i + 4 }, infos[j + 1]);
+		dbuff->Write_Buffer({ 80, i + 4 }, infos[j + 2]);
+		dbuff->Write_Buffer({ 96, i + 4 }, infos[j + 3]);
+		i++;
+		if (j/5 > 43) {
+			dbuff->Write_Buffer({ 40, i + 4 }, Color_Code_Generator("Too Many Records....... :(", 3));
+			break;
+		}
+	}
+	dbuff->Write_Buffer({ 45, MAIN_SCREEN_Y - 5 }, Color_Code_Generator("Press ENTER key to go main menu.....", 6));
 }
 
 Main_Screen::Main_Screen(DoubleBuffering *_dbuff) {

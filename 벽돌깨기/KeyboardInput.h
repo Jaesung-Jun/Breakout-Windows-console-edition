@@ -1,7 +1,9 @@
 #pragma once
 #include <Windows.h>
 #include <conio.h>
+#include <string>
 #include "struct.h"
+using namespace std;
 
 #define KBHIT_ARROW 224;
 #define KBHIT_UP 72
@@ -18,4 +20,6 @@ public:
 	void Player_Ball_Input(Ball* ball);
 	short Game_Status_Choose(short status, int end_num);
 	bool Game_Status_Choose_Check();
+	bool Game_Pause_Check();
+	char Input_Alphabet();
 };

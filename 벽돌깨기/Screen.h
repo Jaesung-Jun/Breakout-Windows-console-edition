@@ -7,6 +7,7 @@
 #include "BallMovement.h"
 #include "Sound.h"
 #include "Object.h"
+#include "GetFile.h"
 
 using namespace std;
 //https://tikcode.tistory.com/4
@@ -19,6 +20,7 @@ private:
 	DoubleBuffering* dbuff;
 public:
 	Screen(DoubleBuffering *_dbuff);
+	void Screen::Print_Player_Score(COORD score_box_xy, float score);
 	void Print_Time_Limit(COORD score_box_xy, int time);
 	void Print_Crashed_Block_Num(COORD score_box_xy, int score);
 	void Print_Remain_Block_Num(COORD score_box_xy, int remain_blocks);
@@ -32,8 +34,12 @@ private:
 	DoubleBuffering* dbuff;
 	void Print_Main_Title(Keyboard *key, short status);
 	void Print_GameOver_String(Keyboard *key, short status);
+	void Print_Pause_String(Keyboard *key, short status);
 public:
 	Main_Screen(DoubleBuffering *_dbuff);
 	void Print_Start_Screen(Keyboard *key, short status);
+	void Print_Pause_Screen(Keyboard *key, short status);
 	void Print_GameOver_Screen(Keyboard *key, short status);
+	void Record_Save_Screen(GetConfig *getconfig, Keyboard *key, Player *player, float score, bool status);
+	void Record_View_Screen(GetRecord *getrecord);
 };
