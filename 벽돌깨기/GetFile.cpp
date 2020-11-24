@@ -14,7 +14,7 @@ GetFile::GetFile() {
 	if (!in_record_file) {
 		string record_file_default[3] = {
 			"####################################",
-			"#	  BreakOut Score Record File          #",
+			"#	  BreakOut Score Record File",
 			"####################################",
 		};
 		ofstream out_record_file("game_record.record");
@@ -41,7 +41,7 @@ GetFile::GetFile(int player_length, int time_limit, int block_length, string pla
 			"# ..player_length : 플레이어(공 발판)의 길이(1 이상의 상수)",
 			"# ..time_limit : 제한 시간 (1 이상의 상수)",
 			"# ..block_length : 벽돌길이(5-8사이의 값을 추천) (1 이상의 상수)",
-			"# ..player_name : 기본 플레이어 이름 (문자열)"
+			"# ..player_name : 기본 플레이어 이름 (문자열)",
 			"##########################################",
 		};
 

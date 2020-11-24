@@ -63,9 +63,10 @@ int main() {
 	//////////////////////////////
 
 	/******************* Get Config ***********************/
-
 	GetConfig config = GetConfig(&player, &time_limit, &wall);
 	GetRecord record = GetRecord();
+
+
 	PutRecord putrecord = PutRecord();
 
 	/******************************************************/
