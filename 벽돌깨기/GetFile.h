@@ -8,6 +8,7 @@
 #define TIME_LIMIT_OPTION "time_limit="
 #define BLOCK_LENGTH_OPTION "block_length="
 #define PLAYER_NAME_OPTION "player_name="
+#define LANGUAGE_OPTION "language="
 #define USER_IDENTIFIER "=========="
 
 using namespace std;
@@ -19,7 +20,7 @@ protected:
 	void Close_Record_Stream();
 	void Close_Config_Stream();
 public:
-	GetFile(int player_length, int time_limit, int block_length, string player_name);		//configure file setting
+	GetFile(int player_length, int time_limit, int block_length, string player_name, string language);		//configure file setting
 	GetFile();			//record file setting
 };
 
@@ -29,6 +30,7 @@ private:
 	int time_limit = 90;		//default
 	int block_length = 5;		//default
 	string player_name = DEFAULT_PLAYER_NAME;	//default
+	string player_language = "kor";
 public:
 	GetConfig(Player *player, int *time_limit, Wall *wall);
 	int Read_Config_Player_Length();

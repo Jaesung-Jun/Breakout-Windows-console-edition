@@ -156,6 +156,12 @@ obj_Ball::obj_Ball(DoubleBuffering *_dbuff, Ball *_ball){
 
 void obj_Ball::Print_Reset_Ball(Keyboard key, Ball* ball) {
 	dbuff->Write_Buffer({ ball->xy.X, ball->xy.Y }, BALL);
+	//Ball Direction Default Setting
+	ball->direction[0] = TRUE;		
+	ball->direction[1] = FALSE;
+	ball->direction[2] = FALSE;
+	ball->direction[3] = FALSE;
+	ball->direction_xy = { -1, -1 };
 	key.Player_Ball_Input(ball); //Space키를 입력받으면 ball.fall_down을 FALSE로 바꾸고 기본 세팅까지 완료함.
 }
 

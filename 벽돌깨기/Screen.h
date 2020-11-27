@@ -20,13 +20,33 @@ private:
 	DoubleBuffering* dbuff;
 public:
 	Screen(DoubleBuffering *_dbuff);
-	void Screen::Print_Player_Score(COORD score_box_xy, float score);
-	void Print_Time_Limit(COORD score_box_xy, int time);
-	void Print_Crashed_Block_Num(COORD score_box_xy, int score);
-	void Print_Remain_Block_Num(COORD score_box_xy, int remain_blocks);
 	void Print_Score_Board_Info(string str, COORD score_box_xy, COORD line_xy);
+	
+	virtual void Print_Time_Limit(COORD score_box_xy, int time_limit);
+	virtual void Print_Crashed_Block_Num(COORD score_box_xy, int score);
+	virtual void Print_Player_Score(COORD score_box_xy, float score);
+	virtual void Print_Remain_Block_Num(COORD score_box_xy, int remain_blocks);
+
 	void Print_Map_Boundary(Box box);
 	void Print_Score_Board(Score_Box score_box);
+};
+
+class Score_Board_Info_Eng : public Screen {
+public:
+	Score_Board_Info_Eng(DoubleBuffering *_dbuff);
+	void Print_Time_Limit(COORD score_box_xy, int time_limit);
+	void Print_Crashed_Block_Num(COORD score_box_xy, int score);
+	void Print_Player_Score(COORD score_box_xy, float score);
+	void Print_Remain_Block_Num(COORD score_box_xy, int remain_blocks);
+};
+
+class Score_Board_Info_Jpn : public Screen {
+public:
+	Score_Board_Info_Jpn(DoubleBuffering *_dbuff);
+	void Print_Time_Limit(COORD score_box_xy, int time_limit);
+	void Print_Crashed_Block_Num(COORD score_box_xy, int score);
+	void Print_Player_Score(COORD score_box_xy, float score);
+	void Print_Remain_Block_Num(COORD score_box_xy, int remain_blocks);
 };
 
 class Main_Screen {
@@ -43,3 +63,4 @@ public:
 	void Record_Save_Screen(GetConfig *getconfig, Keyboard *key, Player *player, float score, bool status);
 	void Record_View_Screen(GetRecord *getrecord);
 };
+

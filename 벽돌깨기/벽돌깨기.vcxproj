@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="game_config.conf" />
+    <None Include="game_record.record" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

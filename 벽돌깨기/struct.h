@@ -69,6 +69,7 @@ typedef struct Player {
 	COORD xy = { ((DEFAULT_BOX_SIZE_X+DEFAULT_BOX_X)*2)/2, 50 };
 	short length = DEFAULT_PLAYER_LENGTH;
 	string name = "Default";
+	string language = "kor";
 } Player;
 
 typedef struct Box {

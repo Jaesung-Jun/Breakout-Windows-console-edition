@@ -25,11 +25,11 @@ GetFile::GetFile() {
 	}
 }
 
-GetFile::GetFile(int player_length, int time_limit, int block_length, string player_name) {
+GetFile::GetFile(int player_length, int time_limit, int block_length, string player_name, string language) {
 	in_conf_file.open("./game_config.conf");
 	if (!in_conf_file) {
-		string configure_file_info[14] = {
-			"##########################################",
+		string configure_file_info[15] = {
+			"############################################################################",
 			"# .......................Breakout Configuration File",
 			"#",
 			"# .........Breakout - 2020 객체지향 프로그래밍 과제",
@@ -42,21 +42,23 @@ GetFile::GetFile(int player_length, int time_limit, int block_length, string pla
 			"# ..time_limit : 제한 시간 (1 이상의 상수)",
 			"# ..block_length : 벽돌길이(5-8사이의 값을 추천) (1 이상의 상수)",
 			"# ..player_name : 기본 플레이어 이름 (문자열)",
-			"##########################################",
+			"# ..Language : 언어설정 (kor, eng, jpn)",
+			"###########################################################################",
 		};
 
-		string configure_file_default[4] = {
+		string configure_file_default[5] = {
 			"player_length=" + to_string(player_length),
 			"time_limit=" + to_string(time_limit),
 			"block_length=" + to_string(block_length),
 			"player_name=" + player_name,
+			"language=" + language,
 		};
 		ofstream out_conf_file("game_config.conf");
 
-		for (int i = 0; i < 14; i++) {
+		for (int i = 0; i < 15; i++) {
 			out_conf_file << configure_file_info[i] << endl;
 		}
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			out_conf_file << configure_file_default[i] << endl;
 		}
 		out_conf_file.close();
@@ -104,7 +106,7 @@ void GetRecord::Delete_Records() {
 }
 
 
-GetConfig::GetConfig(Player *player, int *_time_limit, Wall *wall) : GetFile(player->length, *_time_limit, wall->block_length, player->name) {
+GetConfig::GetConfig(Player *player, int *_time_limit, Wall *wall) : GetFile(player->length, *_time_limit, wall->block_length, player->name, player->language) {
 	string s;
 	while (getline(in_conf_file, s)) {
 		if (s.front() == '#') {
@@ -127,6 +129,10 @@ GetConfig::GetConfig(Player *player, int *_time_limit, Wall *wall) : GetFile(pla
 			else if (s.find(PLAYER_NAME_OPTION) != string::npos) {
 				player->name = s.substr(12);
 				player_name = s.substr(12);
+			}
+			else if (s.find(LANGUAGE_OPTION) != string::npos) {
+				player->language = s.substr(9);
+				player_language = s.substr(9);
 			}
 		}
 	}

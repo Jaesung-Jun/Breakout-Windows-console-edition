@@ -79,5 +79,8 @@
     <None Include="game_config.conf">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include="game_record.record">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>
