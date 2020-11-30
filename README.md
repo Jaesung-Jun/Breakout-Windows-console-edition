@@ -5,7 +5,7 @@
 
 # Description
 
-Developed Atari's Breakout as C++ in Windows Console Environment.
+Developed Atari's Breakout as C++ in Windows Console Environment. &nbsp
 And also, has scores and settings save & load features.
 
 # Features
