@@ -1,12 +1,10 @@
 # Breakout - Windows Console Edition
 
----
 
 ![main screen](img/main_screen.gif)
 
 # Features
 
----
 
 1. Save & Load Scores (File I/O)
 2. Save & Load Settings (File I/O)
@@ -15,14 +13,11 @@
 
 # Requirements
 
----
 
 - Windows 10
 - Microsoft visual c++ 2015 redistributable
 
 # Play Screen
-
----
 
 ![play](img/play.gif)
 
