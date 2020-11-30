@@ -26,7 +26,7 @@ And also, has scores and settings save & load features.
 
 ![play](img/play.gif)
 
-###Youtube Video
+### Youtube Video
 [![Video Label](http://img.youtube.com/vi/qTfUedYx7dM/0.jpg)](https://youtu.be/qTfUedYx7dM)
 
 # Reference
