@@ -21,7 +21,7 @@
 
 ![play](img/play.gif)
 
-[https://youtu.be/qTfUedYx7dM](https://youtu.be/qTfUedYx7dM)
+![Video Label](http://img.youtube.com/vi/qTfUedYx7dM/0.jpg)](https://youtu.be/qTfUedYx7dM)
 
 # Reference
 
