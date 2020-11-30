@@ -3,6 +3,11 @@
 
 ![main screen](img/main_screen.gif)
 
+# Description
+
+Developed Atari's Breakout as C++ in Windows Console Environment.
+And also, has scores and settings save & load features.
+
 # Features
 
 
