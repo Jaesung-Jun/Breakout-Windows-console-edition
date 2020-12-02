@@ -1,12 +1,15 @@
 # Breakout - Windows Console Edition
 
----
 
 ![main screen](img/main_screen.gif)
 
+# Description
+
+Developed Atari's Breakout as C++ in Windows Console Environment.  
+And also, has scores and settings save & load features.
+
 # Features
 
----
 
 1. Save & Load Scores (File I/O)
 2. Save & Load Settings (File I/O)
@@ -15,18 +18,16 @@
 
 # Requirements
 
----
 
 - Windows 10
 - Microsoft visual c++ 2015 redistributable
 
 # Play Screen
 
----
-
 ![play](img/play.gif)
 
-[https://youtu.be/qTfUedYx7dM](https://youtu.be/qTfUedYx7dM)
+### Youtube Video
+[![Video Label](http://img.youtube.com/vi/qTfUedYx7dM/0.jpg)](https://youtu.be/qTfUedYx7dM)
 
 # Reference
 
