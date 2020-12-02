@@ -59,7 +59,7 @@ int main() {
 
 	Main_Screen main_screen = Main_Screen(&dbuff);
 	Screen screen = Screen(&dbuff);
-	Screen* score_board_language;
+	Screen* score_board_language = NULL;
 
 	if (player.language == "eng") {
 		score_board_language = new Score_Board_Info_Eng(&dbuff);
@@ -82,7 +82,7 @@ int main() {
 	SetConsoleTitle(L"Break Out");
 	const COORD default_ball_xy = { (player.xy.X + (player.length / 2)), player.xy.Y - 1 };
 
-	while (1) {
+	while (1) {				//Main loop
 		while (!game_start) {
 			game_status = key.Game_Status_Choose(game_status, 2);
 			main_screen.Print_Start_Screen(&key, game_status);
@@ -111,7 +111,7 @@ int main() {
 							//obj_player.Print_Player(key, box);
 							//obj_ball.Print_Ball(&ball, box, &player, key);
 
-							//Language Setting
+							//Print score board info
 							score_board_language->Print_Time_Limit(score_box.xy, time_limit);
 							score_board_language->Print_Crashed_Block_Num(score_box.xy, player.destroyed_block);
 							score_board_language->Print_Player_Score(score_box.xy, player.score);
@@ -140,6 +140,7 @@ int main() {
 					screen.Print_Map_Boundary(box);
 					screen.Print_Score_Board(score_box);
 
+					//print score board info
 					score_board_language->Print_Time_Limit(score_box.xy, time_limit);
 					score_board_language->Print_Crashed_Block_Num(score_box.xy, player.destroyed_block);
 					score_board_language->Print_Player_Score(score_box.xy, player.score);
@@ -208,6 +209,9 @@ int main() {
 				obj_destroyable_wall.Delete_Swall();
 				cout << "bye bye~" << endl;
 				//record.Delete_Records();
+				if (score_board_language != NULL) {
+					delete score_board_language;
+				}
 				return 0;
 			}
 			else if (game_status == 2 && key.Game_Status_Choose_Check()) {			//RECORD VIEW
@@ -230,5 +234,8 @@ int main() {
 	}
 	obj_destroyable_wall.Delete_Swall();
 	//record.Delete_Records();
+	if (score_board_language != NULL) {
+		delete score_board_language;
+	}
 	return 0;
 }
