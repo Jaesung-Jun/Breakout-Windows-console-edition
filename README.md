@@ -26,9 +26,6 @@ And also, has scores and settings save & load features.
 
 ![play](img/play.gif)
 
-### Youtube Video
-[![Video Label](http://img.youtube.com/vi/qTfUedYx7dM/0.jpg)](https://youtu.be/qTfUedYx7dM)
-
 # Reference
 
 1. [http://tikcode.tistory.com/4](http://tikcode.tistory.com/4) (Double Buffering)
